@@ -3,109 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Financier - LUKA</title>
+  <title>Simulateur d’Investissement</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-      padding: 20px; min-height: 100vh;
-    }
-    .container { max-width: 1400px; margin: 0 auto; }
-    .header {
-      background: linear-gradient(135deg, #39b46e 0%, #2d8f57 100%);
-      color: white; padding: 30px; border-radius: 20px; margin-bottom: 30px;
-      box-shadow: 0 10px 30px rgba(57, 180, 110, 0.3);
-    }
-    .header h1 { font-size: 32px; margin-bottom: 10px; }
-    .header p { opacity: 0.9; font-size: 16px; }
-    .chart-container {
-      background: white; border-radius: 16px; padding: 25px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); margin-bottom: 30px;
-    }
-    #addRowForm input, #addRowForm button {
-      margin: 5px 0; padding: 10px; border-radius: 6px; border: 1px solid #ccc; width: 100%;
-    }
-    #addRowForm button {
-      background: #39b46e; color: white; font-weight: bold;
-      border: none; cursor: pointer; transition: background 0.2s;
-    }
-    #addRowForm button:hover { background: #2d8f57; }
-    #formMessage { margin-top: 10px; font-weight: bold; }
+    body{font-family:Segoe UI,Arial;background:#f5f7fa;margin:0;padding:40px}
+    .card{max-width:480px;margin:auto;background:#fff;padding:30px;
+      border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,.1)}
+    h1{text-align:center;color:#2d8f57;margin-bottom:20px}
+    label{display:block;margin-top:15px;color:#555;font-weight:600}
+    input{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;margin-top:6px}
+    button{margin-top:25px;width:100%;padding:12px;border:none;border-radius:8px;
+      background:#2d8f57;color:#fff;font-size:16px;font-weight:bold;cursor:pointer}
+    button:hover{background:#256b44}
+    #msg{text-align:center;margin-top:20px;font-weight:bold}
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>📊 Dashboard Financier</h1>
-      <p>Ajoute une ligne à ton Google Sheets</p>
-    </div>
-
-    <!-- Formulaire d'ajout -->
-    <div class="chart-container">
-      <h3 class="card-title">➕ Ajouter une ligne dans "Budget Mensuel"</h3>
-      <form id="addRowForm">
-        <input type="text" id="mois" placeholder="Mois (ex: Janvier)" required>
-        <input type="number" id="revenus" placeholder="Revenus" required>
-        <input type="number" id="depenses" placeholder="Dépenses" required>
-        <input type="number" id="epargne" placeholder="Épargne" required>
-        <input type="number" id="investissements" placeholder="Investissements" required>
-        <input type="number" step="0.01" id="taux" placeholder="Taux (0.25 pour 25%)" required>
-        <input type="text" id="commentaire" placeholder="Commentaire">
-        <button type="submit">💾 Enregistrer</button>
-      </form>
-      <div id="formMessage"></div>
-    </div>
+  <div class="card">
+    <h1>💰 Investissement Mensuel</h1>
+    <form id="form">
+      <label>Mois</label>
+      <input type="text" id="mois" placeholder="Octobre 2025" required>
+      <label>Revenu (€)</label>
+      <input type="number" id="revenu" required>
+      <label>Montant à investir (€)</label>
+      <input type="number" id="investi" required>
+      <label>Rendement attendu (%)</label>
+      <input type="number" id="rendement" value="7" step="0.1" required>
+      <button type="submit">💾 Enregistrer</button>
+    </form>
+    <div id="msg"></div>
   </div>
 
   <script>
-    // ✅ Ton URL Apps Script
-    const apiUrl = https://script.google.com/macros/s/AKfycbz12Pqgh7dORuVuNHGPd1KL585ZWBCSne2rpGl41SEunhxlsXM-A5m_K3ZJqjXIgc6l4g/exec;
+    const apiUrl = https://script.google.com/macros/s/AKfycby5FuHKHjQHiF5Kvxs4erSQ17pTJEm-YBxTrE70ZPK54EbZ55tbp2I2xJMqPwKlAT-u/exec;
 
-    // ✅ Gestion de l’envoi du formulaire
-    document.getElementById("addRowForm").addEventListener("submit", async function(e) {
+    document.getElementById("form").addEventListener("submit", async e=>{
       e.preventDefault();
-
       const data = {
         mois: document.getElementById("mois").value,
-        revenus: parseFloat(document.getElementById("revenus").value),
-        depenses: parseFloat(document.getElementById("depenses").value),
-        epargne: parseFloat(document.getElementById("epargne").value),
-        investissements: parseFloat(document.getElementById("investissements").value),
-        taux: parseFloat(document.getElementById("taux").value),
-        commentaire: document.getElementById("commentaire").value
+        revenu: parseFloat(document.getElementById("revenu").value),
+        investi: parseFloat(document.getElementById("investi").value),
+        rendement: parseFloat(document.getElementById("rendement").value)
       };
-
-      try {
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json"
-          }
+      const msg=document.getElementById("msg");
+      msg.textContent="⏳ Envoi...";
+      try{
+        const r=await fetch(apiUrl,{
+          method:"POST",
+          body:JSON.stringify(data),
+          headers:{"Content-Type":"application/json"}
         });
-
-        const result = await response.json();
-
-        if (result.result === "success") {
-          document.getElementById("formMessage").innerText = "✅ Données ajoutées avec succès !";
-          document.getElementById("formMessage").style.color = "#39b46e";
-          document.getElementById("addRowForm").reset();
-        } else {
-          document.getElementById("formMessage").innerText = "❌ Erreur : " + result.message;
-          document.getElementById("formMessage").style.color = "#e53e3e";
+        const res=await r.json();
+        if(res.result==="success"){
+          msg.textContent="✅ Enregistré ! (MSCI World 85 % / EM 15 %)";
+          msg.style.color="#2d8f57";
+          e.target.reset();
+        }else{
+          msg.textContent="❌ Erreur : "+res.message;
+          msg.style.color="#e53e3e";
         }
-
-      } catch (error) {
-        document.getElementById("formMessage").innerText = "⚠️ Erreur : " + error.message;
-        document.getElementById("formMessage").style.color = "#e53e3e";
+      }catch(err){
+        msg.textContent="⚠️ "+err.message;
+        msg.style.color="#e53e3e";
       }
     });
   </script>
 </body>
 </html>
-
-
-
 
 

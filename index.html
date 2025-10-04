@@ -1,673 +1,176 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Financier - LUKA</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .config-banner {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .config-banner input {
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            width: 500px;
-            max-width: 90%;
-            margin: 10px 0;
-            font-size: 14px;
-        }
-
-        .config-banner button {
-            background: white;
-            color: #ff6b6b;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-left: 10px;
-            transition: transform 0.2s;
-        }
-
-        .config-banner button:hover {
-            transform: scale(1.05);
-        }
-
-        .header {
-            background: linear-gradient(135deg, #39b46e 0%, #2d8f57 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(57, 180, 110, 0.3);
-        }
-
-        .header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            opacity: 0.9;
-            font-size: 16px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .big-number {
-            font-size: 36px;
-            font-weight: 700;
-            color: #39b46e;
-            margin: 10px 0;
-        }
-
-        .subtitle {
-            color: #718096;
-            font-size: 14px;
-        }
-
-        .progress-bar {
-            background: #e2e8f0;
-            height: 30px;
-            border-radius: 15px;
-            overflow: hidden;
-            margin: 15px 0;
-        }
-
-        .progress-fill {
-            background: linear-gradient(90deg, #39b46e 0%, #2d8f57 100%);
-            height: 100%;
-            transition: width 0.5s ease;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 15px;
-            color: white;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .chart-container {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        th {
-            background: #f7fafc;
-            color: #2d3748;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        td {
-            color: #4a5568;
-        }
-
-        .positive {
-            color: #39b46e;
-            font-weight: 600;
-        }
-
-        .negative {
-            color: #e53e3e;
-            font-weight: 600;
-        }
-
-        .tab-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .tab {
-            padding: 12px 24px;
-            background: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            color: #718096;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .tab.active {
-            background: linear-gradient(135deg, #39b46e 0%, #2d8f57 100%);
-            color: white;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .metric {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .metric:last-child {
-            border-bottom: none;
-        }
-
-        .metric-label {
-            color: #718096;
-            font-size: 14px;
-        }
-
-        .metric-value {
-            font-weight: 600;
-            color: #2d3748;
-            font-size: 16px;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #718096;
-        }
-
-        .error {
-            background: #fff5f5;
-            border: 2px solid #fc8181;
-            color: #c53030;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px 0;
-        }
-
-        @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .config-banner input {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-            
-            .config-banner button {
-                margin-left: 0;
-                width: 100%;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Financier - LUKA</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+      padding: 20px; min-height: 100vh;
+    }
+    .container { max-width: 1400px; margin: 0 auto; }
+    .config-banner {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+      color: white; padding: 20px; border-radius: 16px; margin-bottom: 20px; text-align: center;
+    }
+    .config-banner input {
+      padding: 12px; border-radius: 8px; border: none; width: 500px; max-width: 90%;
+      margin: 10px 0; font-size: 14px;
+    }
+    .config-banner button {
+      background: white; color: #ff6b6b; border: none; padding: 12px 30px;
+      border-radius: 8px; font-weight: 600; cursor: pointer; margin-left: 10px;
+      transition: transform 0.2s;
+    }
+    .config-banner button:hover { transform: scale(1.05); }
+    .header {
+      background: linear-gradient(135deg, #39b46e 0%, #2d8f57 100%);
+      color: white; padding: 30px; border-radius: 20px; margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(57, 180, 110, 0.3);
+    }
+    .header h1 { font-size: 32px; margin-bottom: 10px; }
+    .header p { opacity: 0.9; font-size: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px; margin-bottom: 30px; }
+    .card {
+      background: white; border-radius: 16px; padding: 25px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); }
+    .card-title { font-size: 18px; font-weight: 600; color: #2d3748; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .big-number { font-size: 36px; font-weight: 700; color: #39b46e; margin: 10px 0; }
+    .subtitle { color: #718096; font-size: 14px; }
+    .progress-bar { background: #e2e8f0; height: 30px; border-radius: 15px; overflow: hidden; margin: 15px 0; }
+    .progress-fill { background: linear-gradient(90deg, #39b46e 0%, #2d8f57 100%);
+      height: 100%; transition: width 0.5s ease; display: flex;
+      align-items: center; justify-content: flex-end; padding-right: 15px;
+      color: white; font-weight: 600; font-size: 14px; }
+    .chart-container {
+      background: white; border-radius: 16px; padding: 25px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); margin-bottom: 30px;
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+    th { background: #f7fafc; color: #2d3748; font-weight: 600; font-size: 14px; }
+    td { color: #4a5568; }
+    .positive { color: #39b46e; font-weight: 600; }
+    .negative { color: #e53e3e; font-weight: 600; }
+    .tab-container { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tab {
+      padding: 12px 24px; background: white; border: none; border-radius: 8px;
+      cursor: pointer; font-weight: 600; color: #718096;
+      transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .tab.active { background: linear-gradient(135deg, #39b46e 0%, #2d8f57 100%); color: white; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .loading { text-align: center; padding: 40px; color: #718096; }
+    #addRowForm input, #addRowForm button {
+      margin: 5px 0; padding: 10px; border-radius: 6px; border: 1px solid #ccc; width: 100%;
+    }
+    #addRowForm button { background: #39b46e; color: white; font-weight: bold; cursor: pointer; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Configuration -->
-        <div class="config-banner" id="configBanner">
-            <h3>⚙️ Configuration Google Sheets</h3>
-            <p style="margin: 10px 0; opacity: 0.9;">Colle l'URL de ton Google Sheets ci-dessous</p>
-            <input type="text" id="sheetsUrl" placeholder="https://docs.google.com/spreadsheets/d/TON_ID/edit...">
-            <button onclick="sauvegarderConfig()">💾 Enregistrer et charger</button>
-            <p style="font-size: 12px; margin-top: 10px; opacity: 0.8;">⚠️ Assure-toi que ton Sheets est en mode "Accessible à tous ceux qui ont le lien"</p>
-        </div>
-
-        <!-- Header -->
-        <div class="header">
-            <h1>📊 Dashboard Financier</h1>
-            <p>Suivi de patrimoine - Objectif 1M€ à 45 ans</p>
-        </div>
-
-        <div id="mainContent" style="display: none;">
-            <!-- Indicateurs principaux -->
-            <div class="grid">
-                <div class="card">
-                    <div class="card-title">💰 Solde Total</div>
-                    <div class="big-number" id="soldeTotal">0 €</div>
-                    <div class="subtitle">Tous comptes confondus</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">📈 Plus-value PEA</div>
-                    <div class="big-number positive" id="plusValue">+0 €</div>
-                    <div class="subtitle">Gains depuis le début</div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">🎯 Objectif 1M€</div>
-                    <div class="big-number" id="progression">0%</div>
-                    <div class="subtitle">Progression vers l'objectif</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressBar" style="width: 0%">0%</div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">💹 Taux d'épargne</div>
-                    <div class="big-number" id="tauxEpargne">0%</div>
-                    <div class="subtitle">Moyenne mensuelle</div>
-                </div>
-            </div>
-
-            <!-- Répartition -->
-            <div class="chart-container">
-                <h3 class="card-title">📊 Répartition par support</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center;">
-                    <div style="text-align: center;">
-                        <canvas id="pieChart" width="250" height="250"></canvas>
-                    </div>
-                    <div>
-                        <div class="metric">
-                            <span class="metric-label">💚 Livret A</span>
-                            <span class="metric-value" id="livretA">0 €</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-label">🌍 PEA World (85%)</span>
-                            <span class="metric-value" id="peaWorld">0 €</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-label">🌏 PEA EM (15%)</span>
-                            <span class="metric-value" id="peaEM">0 €</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Onglets -->
-            <div class="tab-container">
-                <button class="tab active" onclick="switchTab('pea')">💹 PEA - Investissements</button>
-                <button class="tab" onclick="switchTab('mensuel')">💸 Suivi Mensuel</button>
-                <button class="tab" onclick="switchTab('projection')">🔮 Projection Long Terme</button>
-            </div>
-
-            <!-- Contenu PEA -->
-            <div id="pea" class="tab-content active">
-                <div class="chart-container">
-                    <h3 class="card-title">Détail du portefeuille PEA</h3>
-                    <div id="peaContent" class="loading">Chargement...</div>
-                </div>
-            </div>
-
-            <!-- Contenu Mensuel -->
-            <div id="mensuel" class="tab-content">
-                <div class="chart-container">
-                    <h3 class="card-title">Suivi mensuel des finances</h3>
-                    <div id="mensuelContent" class="loading">Chargement...</div>
-                </div>
-            </div>
-
-            <!-- Contenu Projection -->
-            <div id="projection" class="tab-content">
-                <div class="chart-container">
-                    <h3 class="card-title">🔮 Projection de patrimoine</h3>
-                    <p class="subtitle" style="margin-bottom: 20px;">Estimation basée sur vos paramètres actuels</p>
-                    <div id="projectionContent" class="loading">Chargement...</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="errorMessage"></div>
+  <div class="container">
+    <!-- Configuration -->
+    <div class="config-banner" id="configBanner">
+      <h3>⚙️ Configuration Google Sheets</h3>
+      <p style="margin: 10px 0; opacity: 0.9;">Colle l'URL de ton Google Sheets ci-dessous</p>
+      <input type="text" id="sheetsUrl" placeholder="https://docs.google.com/spreadsheets/d/TON_ID/edit...">
+      <button onclick="sauvegarderConfig()">💾 Enregistrer et charger</button>
+      <p style="font-size: 12px; margin-top: 10px; opacity: 0.8;">⚠️ Assure-toi que ton Sheets est en mode "Accessible à tous"</p>
     </div>
 
-    <script>
-        let spreadsheetId = null;
-        let sheetsData = {};
+    <!-- Header -->
+    <div class="header">
+      <h1>📊 Dashboard Financier</h1>
+      <p>Suivi de patrimoine - Objectif 1M€ à 45 ans</p>
+    </div>
 
-        // Charger la config sauvegardée
-        window.onload = function() {
-            const savedUrl = localStorage.getItem('sheetsUrl');
-            if (savedUrl) {
-                document.getElementById('sheetsUrl').value = savedUrl;
-                sauvegarderConfig();
-            }
+    <div id="mainContent" style="display: none;">
+      <!-- Onglets -->
+      <div class="tab-container">
+        <button class="tab active" onclick="switchTab('pea')">💹 PEA - Investissements</button>
+        <button class="tab" onclick="switchTab('mensuel')">💸 Suivi Mensuel</button>
+        <button class="tab" onclick="switchTab('projection')">🔮 Projection Long Terme</button>
+      </div>
+
+      <!-- Contenu Mensuel -->
+      <div id="mensuel" class="tab-content active">
+        <div class="chart-container">
+          <h3 class="card-title">Suivi mensuel des finances</h3>
+          <div id="mensuelContent" class="loading">Chargement...</div>
+        </div>
+
+        <!-- Formulaire d'ajout -->
+        <div class="chart-container">
+          <h3 class="card-title">➕ Ajouter une ligne dans Budget Mensuel</h3>
+          <form id="addRowForm">
+            <input type="text" id="mois" placeholder="Mois (ex: Janvier)" required>
+            <input type="number" id="revenus" placeholder="Revenus" required>
+            <input type="number" id="depenses" placeholder="Dépenses" required>
+            <input type="number" id="epargne" placeholder="Épargne" required>
+            <input type="number" id="investissements" placeholder="Investissements" required>
+            <input type="number" step="0.01" id="taux" placeholder="Taux (0.25 pour 25%)" required>
+            <input type="text" id="commentaire" placeholder="Commentaire">
+            <button type="submit">💾 Enregistrer</button>
+          </form>
+          <div id="formMessage"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let spreadsheetId = null;
+    let sheetsData = {};
+    const apiUrl = "TON_URL_APPS_SCRIPT"; //https://script.google.com/macros/s/AKfycbwpDncmAIyZk9FXOB3B0JVWHXXG3kMF-0XeN3NM2z6os-jzL-agSFO49yOJJfdqe9QDmg/exec
+
+    // ✅ Formulaire d'ajout de données
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("addRowForm");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const data = {
+          mois: document.getElementById("mois").value,
+          revenus: parseFloat(document.getElementById("revenus").value),
+          depenses: parseFloat(document.getElementById("depenses").value),
+          epargne: parseFloat(document.getElementById("epargne").value),
+          investissements: parseFloat(document.getElementById("investissements").value),
+          taux: parseFloat(document.getElementById("taux").value),
+          commentaire: document.getElementById("commentaire").value
         };
-
-        function sauvegarderConfig() {
-            const url = document.getElementById('sheetsUrl').value.trim();
-            
-            if (!url) {
-                alert('❌ Merci de coller l\'URL de ton Google Sheets !');
-                return;
-            }
-
-            // Extraire l'ID du Sheets
-            const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
-            if (!match) {
-                alert('❌ URL invalide ! Assure-toi de copier l\'URL complète depuis Google Sheets.');
-                return;
-            }
-
-            spreadsheetId = match[1];
-            localStorage.setItem('sheetsUrl', url);
-            
-            document.getElementById('configBanner').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'block';
-            
-            chargerDonnees();
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json" }
+          });
+          const result = await response.json();
+          if (result.result === "success") {
+            document.getElementById("formMessage").innerText = "✅ Données ajoutées avec succès !";
+            form.reset();
+          } else {
+            document.getElementById("formMessage").innerText = "❌ Erreur lors de l’ajout";
+          }
+        } catch (err) {
+          document.getElementById("formMessage").innerText = "⚠️ Erreur : " + err.message;
         }
+      });
+    });
 
-        async function chargerDonnees() {
-            try {
-                // Charger toutes les feuilles
-                await Promise.all([
-                    chargerFeuille('Paramètres', 'A:B'),
-                    chargerFeuille('PEA', 'A:F'),
-                    chargerFeuille('Budget Mensuel', 'A:G'),
-                    chargerFeuille('Répartition', 'A:B')
-                ]);
-
-                afficherDonnees();
-            } catch (error) {
-                document.getElementById('errorMessage').innerHTML = `
-                    <div class="error">
-                        <h3>❌ Erreur de chargement</h3>
-                        <p><strong>Message :</strong> ${error.message}</p>
-                        <p><strong>Solutions :</strong></p>
-                        <ul>
-                            <li>Vérifie que ton Google Sheets est bien en mode "Accessible à tous ceux qui ont le lien"</li>
-                            <li>Assure-toi que les feuilles ont les bons noms : "Paramètres", "PEA", "Budget Mensuel", "Répartition"</li>
-                            <li>Vérifie que l'URL est complète</li>
-                        </ul>
-                    </div>
-                `;
-            }
-        }
-
-        async function chargerFeuille(nom, range) {
-            const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(nom)}&range=${range}`;
-            
-            const response = await fetch(url);
-            const text = await response.text();
-            
-            // Extraire le JSON de la réponse
-            const json = JSON.parse(text.substr(47).slice(0, -2));
-            
-            sheetsData[nom] = json.table.rows.map(row => 
-                row.c.map(cell => cell ? cell.v : null)
-            );
-        }
-
-        function afficherDonnees() {
-            try {
-                // Récupérer les paramètres
-                const params = {};
-                sheetsData['Paramètres'].forEach(row => {
-                    if (row[0] && row[1] !== null) {
-                        params[row[0]] = row[1];
-                    }
-                });
-
-                // Récupérer les données de répartition
-                let livretA = 0, peaTotal = 0;
-                sheetsData['Répartition'].forEach((row, i) => {
-                    if (i > 0 && row[1] !== null) {
-                        if (row[0].includes('Livret')) livretA = row[1];
-                        else peaTotal += row[1];
-                    }
-                });
-
-                const peaWorld = peaTotal * 0.85;
-                const peaEM = peaTotal * 0.15;
-                const total = livretA + peaTotal;
-
-                // Calculer la plus-value PEA
-                const peaData = sheetsData['PEA'].slice(1).filter(row => row[0]);
-                let totalVerse = 0;
-                let valeurActuelle = 0;
-                peaData.forEach(row => {
-                    if (row[1]) totalVerse += row[1];
-                    if (row[4]) valeurActuelle = row[4];
-                });
-                const plusValue = valeurActuelle - totalVerse;
-
-                // Afficher les indicateurs
-                document.getElementById('soldeTotal').textContent = formatEuro(total);
-                document.getElementById('plusValue').textContent = formatEuro(plusValue, true);
-                
-                const progression = (total / 1000000 * 100).toFixed(2);
-                document.getElementById('progression').textContent = progression + '%';
-                document.getElementById('progressBar').style.width = Math.min(progression, 100) + '%';
-                document.getElementById('progressBar').textContent = progression + '%';
-
-                // Calculer le taux d'épargne moyen
-                const budgetData = sheetsData['Budget Mensuel'].slice(1).filter(row => row[0]);
-                let tauxMoyen = 0;
-                if (budgetData.length > 0) {
-                    const total = budgetData.reduce((acc, row) => {
-                        if (row[5]) return acc + parseFloat(row[5]);
-                        return acc;
-                    }, 0);
-                    tauxMoyen = (total / budgetData.length * 100).toFixed(0);
-                }
-                document.getElementById('tauxEpargne').textContent = tauxMoyen + '%';
-
-                // Répartition
-                document.getElementById('livretA').textContent = formatEuro(livretA);
-                document.getElementById('peaWorld').textContent = formatEuro(peaWorld);
-                document.getElementById('peaEM').textContent = formatEuro(peaEM);
-
-                // Dessiner le graphique
-                dessinerPieChart(livretA, peaWorld, peaEM);
-
-                // Afficher les tableaux
-                afficherTableauPEA(peaData);
-                afficherTableauMensuel(budgetData);
-                afficherProjection(params, total);
-
-            } catch (error) {
-                console.error('Erreur affichage:', error);
-                document.getElementById('errorMessage').innerHTML = `
-                    <div class="error">
-                        <h3>❌ Erreur d'affichage des données</h3>
-                        <p>Vérifie que ton Google Sheets contient toutes les feuilles et données nécessaires.</p>
-                    </div>
-                `;
-            }
-        }
-
-        function afficherTableauPEA(data) {
-            let html = '<table><thead><tr>';
-            html += '<th>Mois</th><th>Versement</th><th>World (85%)</th><th>EM (15%)</th><th>Valeur estimée</th><th>Plus-value</th>';
-            html += '</tr></thead><tbody>';
-
-            data.forEach(row => {
-                html += '<tr>';
-                html += `<td>${row[0] || ''}</td>`;
-                html += `<td>${formatEuro(row[1])}</td>`;
-                html += `<td>${formatEuro(row[2])}</td>`;
-                html += `<td>${formatEuro(row[3])}</td>`;
-                html += `<td><strong>${formatEuro(row[4])}</strong></td>`;
-                html += `<td class="positive">${formatEuro(row[5], true)}</td>`;
-                html += '</tr>';
-            });
-
-            html += '</tbody></table>';
-            document.getElementById('peaContent').innerHTML = html;
-        }
-
-        function afficherTableauMensuel(data) {
-            let html = '<table><thead><tr>';
-            html += '<th>Mois</th><th>Revenus</th><th>Dépenses</th><th>Épargne</th><th>Investissements</th><th>Taux épargne</th><th>Commentaire</th>';
-            html += '</tr></thead><tbody>';
-
-            data.forEach(row => {
-                html += '<tr>';
-                html += `<td>${row[0] || ''}</td>`;
-                html += `<td class="positive">${formatEuro(row[1])}</td>`;
-                html += `<td class="negative">${formatEuro(row[2])}</td>`;
-                html += `<td>${formatEuro(row[3])}</td>`;
-                html += `<td>${formatEuro(row[4])}</td>`;
-                html += `<td><strong>${(row[5] * 100).toFixed(0)}%</strong></td>`;
-                html += `<td>${row[6] || ''}</td>`;
-                html += '</tr>';
-            });
-
-            html += '</tbody></table>';
-            document.getElementById('mensuelContent').innerHTML = html;
-        }
-
-        function afficherProjection(params, capitalActuel) {
-            const versement = params['Versement mensuel'] || 900;
-            const rendement = (params['Rendement attendu (%)'] || 7) / 100;
-            const ageActuel = params['Âge actuel'] || 20;
-
-            const ages = [25, 30, 35, 40, 45];
-            
-            let html = '<table><thead><tr>';
-            html += '<th>Âge</th><th>Années d\'investissement</th><th>Total versé</th><th>Capital estimé</th><th>Plus-value</th>';
-            html += '</tr></thead><tbody>';
-
-            ages.forEach(age => {
-                const annees = age - ageActuel;
-                if (annees > 0) {
-                    const mois = annees * 12;
-                    const totalVerse = capitalActuel + (versement * mois);
-                    const tauxMensuel = rendement / 12;
-                    const capitalFinal = capitalActuel * Math.pow(1 + tauxMensuel, mois) + 
-                                        versement * ((Math.pow(1 + tauxMensuel, mois) - 1) / tauxMensuel);
-                    const plusValue = capitalFinal - totalVerse;
-                    
-                    html += '<tr>';
-                    html += `<td><strong>${age} ans</strong></td>`;
-                    html += `<td>${annees} ans</td>`;
-                    html += `<td>${formatEuro(totalVerse)}</td>`;
-                    html += `<td class="positive"><strong>${formatEuro(capitalFinal)}</strong></td>`;
-                    html += `<td class="positive">${formatEuro(plusValue, true)}</td>`;
-                    html += '</tr>';
-                }
-            });
-
-            html += '</tbody></table>';
-            document.getElementById('projectionContent').innerHTML = html;
-        }
-
-        function dessinerPieChart(livret, world, em) {
-            const canvas = document.getElementById('pieChart');
-            const ctx = canvas.getContext('2d');
-            const total = livret + world + em;
-            
-            if (total === 0) return;
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const radius = 100;
-            
-            const angles = [
-                (livret / total) * 2 * Math.PI,
-                (world / total) * 2 * Math.PI,
-                (em / total) * 2 * Math.PI
-            ];
-            
-            const colors = ['#39b46e', '#7a6ff0', '#f6ad55'];
-            const labels = ['Livret A', 'PEA World', 'PEA EM'];
-            
-            let currentAngle = -Math.PI / 2;
-            
-            angles.forEach((angle, i) => {
-                ctx.beginPath();
-                ctx.fillStyle = colors[i];
-                ctx.moveTo(centerX, centerY);
-                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + angle);
-                ctx.closePath();
-                ctx.fill();
-                
-                // Ajouter le pourcentage
-                const middleAngle = currentAngle + angle / 2;
-                const textX = centerX + Math.cos(middleAngle) * (radius * 0.7);
-                const textY = centerY + Math.sin(middleAngle) * (radius * 0.7);
-                
-                const percent = ((angle / (2 * Math.PI)) * 100).toFixed(0);
-                ctx.fillStyle = 'white';
-                ctx.font = 'bold 14px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(percent + '%', textX, textY);
-                
-                currentAngle += angle;
-            });
-        }
-
-        function formatEuro(valeur, avecSigne = false) {
-            if (valeur === null || valeur === undefined) return '0 €';
-            const formatted = Math.round(valeur).toLocaleString('fr-FR') + ' €';
-            return avecSigne && valeur >= 0 ? '+' + formatted : formatted;
-        }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById(tab).classList.add('active');
-        }
-    </script>
+    // Navigation onglets
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById(tab).classList.add('active');
+    }
+  </script>
 </body>
 </html>

@@ -30,8 +30,9 @@ body{
 .param-item:hover{transform:translateY(-3px);border-color:#39b46e22}
 .param-item label{display:block;font-weight:600;color:#4a5568;margin-bottom:8px}
 .param-item input{width:100%;padding:10px;border-radius:8px;border:1px solid #e2e8f0;font-size:15px}
-.btn-primary{background:linear-gradient(135deg,#39b46e 0%,#2d8f57 100%);color:#fff;border:none;padding:12px 28px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(57,180,110,.18)}
+.btn-primary{background:linear-gradient(135deg,#39b46e 0%,#2d8f57 100%);color:#fff;border:none;padding:12px 28px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(57,180,110,.18);transition:transform .2s}
 .btn-primary:hover{transform:translateY(-3px)}
+.btn-primary:active{transform:translateY(0)}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px 0}
 .stat-card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
 .stat-label{font-size:13px;color:#718096;margin-bottom:8px}
@@ -96,7 +97,7 @@ th{background:#fbfcfd;color:#2d3748;font-weight:700;font-size:13px}
       </div>
     </div>
     <div style="text-align:center;margin-top:16px">
-      <button class="btn-primary" onclick="calculer()">🚀 Calculer ma projection</button>
+      <button class="btn-primary" id="btnCalculer">🚀 Calculer ma projection</button>
     </div>
   </div>
 
@@ -167,39 +168,90 @@ th{background:#fbfcfd;color:#2d3748;font-weight:700;font-size:13px}
 </div>
 
 <script>
-/* Dashboard JS complet — suppression via data-id et event delegation */
+/* Dashboard JS complet */
 let historiqueMois = [];
 
 window.onload = function() {
+  // restore saved data
+  try {
+    const saved = localStorage.getItem('dashboardData');
+    if (saved) {
+      const data = JSON.parse(saved);
+      document.getElementById('revenu').value = data.revenu ?? 1200;
+      document.getElementById('investissement').value = data.investissement ?? 900;
+      document.getElementById('msciWorld').value = data.msciWorld ?? 85;
+      document.getElementById('msciEM').value = data.msciEM ?? 15;
+      document.getElementById('rendement').value = data.rendement ?? 7;
+      document.getElementById('age').value = data.age ?? 17;
+      document.getElementById('livretA').value = data.livretA ?? 3000;
+      // rebuild historique
+      historiqueMois = (data.historique || []).map(item => {
+        return {
+          mois: item.mois,
+          montant: Number(item.montant) || 0,
+          world: Number(item.world) || 0,
+          em: Number(item.em) || 0,
+          date: new Date((item.mois || '') + '-01'),
+          id: Number(item.id) || Date.now() + Math.floor(Math.random()*1000)
+        };
+      });
+      historiqueMois.sort((a,b) => a.date - b.date);
+    }
+  } catch(e) {
+    console.warn('Erreur lecture storage', e);
+    historiqueMois = [];
+  }
+  
+  // Attacher l'événement au bouton
+  document.getElementById('btnCalculer').addEventListener('click', calculer);
+  
+  // Calculer au chargement
   calculer();
 };
 
-// save to localStorage
 function sauvegarder() {
-  // Fonction désactivée pour Claude.ai (localStorage non disponible)
+  try {
+    const data = {
+      revenu: Number(document.getElementById('revenu').value) || 0,
+      investissement: Number(document.getElementById('investissement').value) || 0,
+      msciWorld: Number(document.getElementById('msciWorld').value) || 85,
+      msciEM: Number(document.getElementById('msciEM').value) || 15,
+      rendement: Number(document.getElementById('rendement').value) || 7,
+      age: Number(document.getElementById('age').value) || 17,
+      livretA: Number(document.getElementById('livretA').value) || 0,
+      historique: historiqueMois.map(h => ({
+        mois: h.mois,
+        montant: h.montant,
+        world: h.world,
+        em: h.em,
+        id: h.id
+      }))
+    };
+    localStorage.setItem('dashboardData', JSON.stringify(data));
+  } catch(e) {
+    console.warn('Erreur sauvegarde', e);
+  }
 }
 
-// main recalcul
 function calculer() {
+  console.log('Calcul en cours...');
+  
   const livretA = Number(document.getElementById('livretA').value) || 0;
   const rendementAnn = Number(document.getElementById('rendement').value) || 7;
   const rendement = rendementAnn / 100;
   const age = Number(document.getElementById('age').value) || 17;
   const investissement = Number(document.getElementById('investissement').value) || 0;
 
-  // compute PEA value by compounding each historical deposit to 'today'
   const today = new Date();
   let valeurPEA = 0;
   let totalVerse = 0;
 
-  // Ensure historique is sorted ascending
   historiqueMois.sort((a,b) => a.date - b.date);
 
   historiqueMois.forEach(item => {
     const depDate = item.date instanceof Date ? item.date : new Date(item.mois + '-01');
-    // months difference between depDate and today
     let monthsElapsed = (today.getFullYear() - depDate.getFullYear()) * 12 + (today.getMonth() - depDate.getMonth());
-    if (monthsElapsed < 0) monthsElapsed = 0; // future deposit => no growth yet
+    if (monthsElapsed < 0) monthsElapsed = 0;
     const monthlyRate = rendement / 12;
     const value = item.montant * Math.pow(1 + monthlyRate, monthsElapsed);
     valeurPEA += value;
@@ -224,11 +276,12 @@ function calculer() {
   afficherHistorique();
   afficherProjection(capitalTotal, investissement, rendement, age);
   sauvegarder();
+  
+  console.log('Calcul terminé!');
 }
 
-// Ajoute un mois depuis input type="month"
 function ajouterMois() {
-  const mois = document.getElementById('nouveauMois').value; // format "YYYY-MM"
+  const mois = document.getElementById('nouveauMois').value;
   const montant = Number(document.getElementById('nouveauMontant').value) || 0;
   if (!mois || montant <= 0) {
     alert('❌ Remplis correctement le mois et le montant.');
@@ -247,21 +300,18 @@ function ajouterMois() {
   };
 
   historiqueMois.push(obj);
-  // sort ascending
   historiqueMois.sort((a,b) => a.date - b.date);
   document.getElementById('nouveauMois').value = '';
-  document.getElementById('nouveauMontant').value = montant; // keep value for convenience
+  document.getElementById('nouveauMontant').value = montant;
   calculer();
 }
 
-// suppression via id
 function supprimerMois(id) {
   if (!confirm('Supprimer cet enregistrement ?')) return;
   historiqueMois = historiqueMois.filter(m => Number(m.id) !== Number(id));
   calculer();
 }
 
-// affichage du tableau historique
 function afficherHistorique() {
   const tbody = document.getElementById('historique');
   if (historiqueMois.length === 0) {
@@ -275,7 +325,6 @@ function afficherHistorique() {
   let totalVerse = 0;
   let html = '';
 
-  // iterate in chronological order
   historiqueMois.forEach((item, index) => {
     const depDate = item.date instanceof Date ? item.date : new Date(item.mois + '-01');
     let monthsElapsed = (today.getFullYear() - depDate.getFullYear()) * 12 + (today.getMonth() - depDate.getMonth());
@@ -303,7 +352,6 @@ function afficherHistorique() {
   tbody.innerHTML = html;
 }
 
-// event delegation pour boutons delete
 document.addEventListener('click', function(e) {
   const t = e.target;
   if (t && t.classList && t.classList.contains('btn-delete')) {
@@ -312,7 +360,6 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// projection jusqu'à 45 ans
 function afficherProjection(capitalActuel, investissement, rendementAnn, ageActuel) {
   const ages = [20,25,30,35,40,45];
   const grid = document.getElementById('projectionGrid');
@@ -320,13 +367,12 @@ function afficherProjection(capitalActuel, investissement, rendementAnn, ageActu
   grid.innerHTML = '';
   tbody.innerHTML = '';
 
-  const monthlyRate = rendementAnn / 12; // rendementAnn passed as decimal e.g. 0.07
+  const monthlyRate = rendementAnn / 12;
 
   ages.forEach(age => {
     if (age <= ageActuel) return;
     const years = age - ageActuel;
     const months = years * 12;
-    // formule de capital futur avec versements mensuels (versements à la fin du mois)
     let capitalFinal;
     if (monthlyRate === 0) {
       capitalFinal = capitalActuel + investissement * months;
@@ -337,13 +383,11 @@ function afficherProjection(capitalActuel, investissement, rendementAnn, ageActu
     const totalVerse = capitalActuel + investissement * months;
     const plusValue = capitalFinal - totalVerse;
 
-    // card
     const card = document.createElement('div');
     card.className = 'projection-card';
     card.innerHTML = `<div class="projection-age">${age} ans</div><div class="projection-amount">${formatEuro(capitalFinal)}</div>`;
     grid.appendChild(card);
 
-    // table row
     const tr = document.createElement('tr');
     tr.innerHTML = `<td><strong>${age} ans</strong></td>
                     <td>${years} an${years>1?'s':''}</td>
@@ -354,7 +398,6 @@ function afficherProjection(capitalActuel, investissement, rendementAnn, ageActu
   });
 }
 
-// utilitaire format euro
 function formatEuro(valeur) {
   if (valeur === null || valeur === undefined || isNaN(Number(valeur))) return '0 €';
   return Math.round(Number(valeur)).toLocaleString('fr-FR') + ' €';

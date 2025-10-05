@@ -95,6 +95,10 @@ th{background:#fbfcfd;color:#2d3748;font-weight:700;font-size:13px}
         <label>💚 Livret A (€)</label>
         <input id="livretA" type="number" value="3000" min="0" />
       </div>
+      <div class="param-item">
+        <label>💳 Compte courant (€)</label>
+        <input id="compteCourant" type="number" value="0" min="0" />
+      </div>
     </div>
     <div style="text-align:center;margin-top:16px">
       <button class="btn-primary" id="btnCalculer">🚀 Calculer ma projection</button>
@@ -184,6 +188,7 @@ window.onload = function() {
       document.getElementById('rendement').value = data.rendement ?? 7;
       document.getElementById('age').value = data.age ?? 17;
       document.getElementById('livretA').value = data.livretA ?? 3000;
+      document.getElementById('compteCourant').value = data.compteCourant ?? 0;
       // rebuild historique
       historiqueMois = (data.historique || []).map(item => {
         return {
@@ -219,6 +224,7 @@ function sauvegarder() {
       rendement: Number(document.getElementById('rendement').value) || 7,
       age: Number(document.getElementById('age').value) || 17,
       livretA: Number(document.getElementById('livretA').value) || 0,
+      compteCourant: Number(document.getElementById('compteCourant').value) || 0,
       historique: historiqueMois.map(h => ({
         mois: h.mois,
         montant: h.montant,
@@ -237,6 +243,7 @@ function calculer() {
   console.log('Calcul en cours...');
   
   const livretA = Number(document.getElementById('livretA').value) || 0;
+  const compteCourant = Number(document.getElementById('compteCourant').value) || 0;
   const rendementAnn = Number(document.getElementById('rendement').value) || 7;
   const rendement = rendementAnn / 100;
   const age = Number(document.getElementById('age').value) || 17;
@@ -259,7 +266,7 @@ function calculer() {
   });
 
   const plusValue = valeurPEA - totalVerse;
-  const capitalTotal = livretA + valeurPEA;
+  const capitalTotal = livretA + compteCourant + valeurPEA;
 
   const progressionPct = (capitalTotal / 1000000 * 100);
   const progressionPctText = progressionPct.toFixed(2);

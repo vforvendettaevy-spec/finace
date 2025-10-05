@@ -12,7 +12,6 @@
             document.getElementById('rendement').value = data.rendement || 7;
             document.getElementById('age').value = data.age || 17;
             document.getElementById('livretA').value = data.livretA || 5000;
-            document.getElementById('compteCourant').value = data.compteCourant || 0;
             historiqueMois = data.historique || [];
         }
         calculer();
@@ -27,7 +26,6 @@
             rendement: parseFloat(document.getElementById('rendement').value),
             age: parseFloat(document.getElementById('age').value),
             livretA: parseFloat(document.getElementById('livretA').value),
-            compteCourant: parseFloat(document.getElementById('compteCourant').value),
             historique: historiqueMois
         };
         localStorage.setItem('dashboardData', JSON.stringify(data));
@@ -35,22 +33,21 @@
 
     function calculer() {
         const livretA = parseFloat(document.getElementById('livretA').value) || 0;
-        const compteCourant = parseFloat(document.getElementById('compteCourant').value) || 0;
         const rendement = parseFloat(document.getElementById('rendement').value) / 100 || 0.07;
         const age = parseFloat(document.getElementById('age').value) || 17;
         const investissement = parseFloat(document.getElementById('investissement').value) || 900;
 
         let valeurPEA = 0;
         let totalVerse = 0;
-
+        
         historiqueMois.forEach((mois, index) => {
             totalVerse += mois.montant;
             const moisEcoules = historiqueMois.length - index;
-            valeurPEA += mois.montant * Math.pow(1 + rendement / 12, moisEcoules);
+            valeurPEA += mois.montant * Math.pow(1 + rendement/12, moisEcoules);
         });
 
         const plusValue = valeurPEA - totalVerse;
-        const capitalTotal = livretA + compteCourant + valeurPEA;
+        const capitalTotal = livretA + valeurPEA;
         const progressionPct = (capitalTotal / 1000000 * 100).toFixed(2);
 
         document.getElementById('capitalTotal').textContent = formatEuro(capitalTotal);
@@ -61,7 +58,7 @@
         document.getElementById('progressBar').textContent = progressionPct + '%';
 
         afficherHistorique();
-        afficherProjection(valeurPEA, investissement, rendement, age); // 🔧 correction ici
+        afficherProjection(capitalTotal, investissement, rendement, age);
         sauvegarder();
     }
 
@@ -116,7 +113,7 @@
             totalVerse += mois.montant;
             const index = historiqueMois.indexOf(mois);
             const moisEcoules = historiqueMois.length - index;
-            const valeurMois = mois.montant * Math.pow(1 + rendement / 12, moisEcoules);
+            const valeurMois = mois.montant * Math.pow(1 + rendement/12, moisEcoules);
             valeurCumulee += valeurMois;
             const plusValue = valeurCumulee - totalVerse;
 
@@ -139,6 +136,7 @@
         tbody.innerHTML = html;
     }
 
+    // ✅ Ajout de l'écouteur d'événement global pour les boutons 🗑️
     document.addEventListener("click", function(e) {
         if (e.target.classList.contains("btn-delete")) {
             const id = parseInt(e.target.getAttribute("data-id"));
@@ -146,11 +144,11 @@
         }
     });
 
-    function afficherProjection(valeurPEA, investissement, rendement, ageActuel) {
+    function afficherProjection(capitalActuel, investissement, rendement, ageActuel) {
         const ages = [20, 25, 30, 35, 40, 45];
         const grid = document.getElementById('projectionGrid');
         const tbody = document.getElementById('projectionBody');
-
+        
         let htmlGrid = '';
         let htmlTable = '';
 
@@ -159,10 +157,10 @@
 
             const annees = age - ageActuel;
             const mois = annees * 12;
+            const totalVerse = capitalActuel + (investissement * mois);
             const tauxMensuel = rendement / 12;
-            const capitalFinal = valeurPEA * Math.pow(1 + tauxMensuel, mois) +
-                investissement * ((Math.pow(1 + tauxMensuel, mois) - 1) / tauxMensuel);
-            const totalVerse = investissement * mois + valeurPEA;
+            const capitalFinal = capitalActuel * Math.pow(1 + tauxMensuel, mois) + 
+                                investissement * ((Math.pow(1 + tauxMensuel, mois) - 1) / tauxMensuel);
             const plusValue = capitalFinal - totalVerse;
 
             htmlGrid += `
@@ -193,7 +191,6 @@
         return avecSigne && valeur >= 0 ? '+' + formatted : formatted;
     }
 </script>
-
 
 
 

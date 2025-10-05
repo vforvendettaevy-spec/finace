@@ -98,6 +98,10 @@ th{background:#2d3748;color:#cbd5e0;font-weight:700;font-size:13px}
         <input id="rendement" type="number" value="7" step="0.1" min="0" />
       </div>
       <div class="param-item">
+        <label>💸 Frais de courtage (%)</label>
+        <input id="fraisCourtage" type="number" value="0.2" step="0.1" min="0" />
+      </div>
+      <div class="param-item">
         <label>🎂 Mon âge actuel</label>
         <input id="age" type="number" value="17" min="0" />
       </div>
@@ -126,12 +130,42 @@ th{background:#2d3748;color:#cbd5e0;font-weight:700;font-size:13px}
     </div>
     <div class="stat-card">
       <div class="stat-label">📈 Plus-value PEA</div>
-      <div id="plusValue" style="font-size:28px;font-weight:800;color:#39b46e">+0 €</div>
+      <div id="plusValue" style="font-size:28px;font-weight:800;color:#39b46e">+ 0 €</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">📊 Rendement réel</div>
+      <div class="stat-value" id="rendementReel" style="font-size:28px;color:#7a6ff0">0%</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">🎯 Progression vers 1M€</div>
       <div class="stat-value" id="progression">0%</div>
       <div class="progress-bar"><div id="progressBar" class="progress-fill" style="width:0%">0%</div></div>
+    </div>
+  </div>
+
+  <div class="chart-section">
+    <div class="section-title">📈 Évolution de mon capital</div>
+    <canvas id="chartEvolution" style="max-height:300px"></canvas>
+  </div>
+
+  <div class="chart-section">
+    <div class="section-title">🎯 Calculateur d'objectif</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px">
+      <div>
+        <label style="color:#cbd5e0;font-weight:600;display:block;margin-bottom:8px">💰 Objectif (€)</label>
+        <input id="objectifMontant" type="number" value="1000000" min="0" style="width:100%;padding:10px;border-radius:8px;border:1px solid #4a5568;background:#2d3748;color:#e2e8f0;font-size:15px" />
+      </div>
+      <div>
+        <label style="color:#cbd5e0;font-weight:600;display:block;margin-bottom:8px">🎂 Âge cible</label>
+        <input id="objectifAge" type="number" value="45" min="0" style="width:100%;padding:10px;border-radius:8px;border:1px solid #4a5568;background:#2d3748;color:#e2e8f0;font-size:15px" />
+      </div>
+      <div style="display:flex;align-items:flex-end">
+        <button class="btn-primary" onclick="calculerObjectif()" style="width:100%">🧮 Calculer</button>
+      </div>
+    </div>
+    <div id="resultatObjectif" style="background:#2d3748;padding:20px;border-radius:10px;display:none">
+      <p style="font-size:18px;color:#e2e8f0;margin:0"><strong>💡 Pour atteindre <span id="objMontant"></span> à <span id="objAge"></span> ans :</strong></p>
+      <p style="font-size:24px;color:#39b46e;font-weight:800;margin:10px 0 0 0">Tu dois investir <span id="objInvestissement"></span> par mois</p>
     </div>
   </div>
 
@@ -181,9 +215,11 @@ th{background:#2d3748;color:#cbd5e0;font-weight:700;font-size:13px}
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <script>
 /* Dashboard JS complet */
 let historiqueMois = [];
+let chartInstance = null;
 
 window.onload = function() {
   // restore saved data
@@ -196,6 +232,7 @@ window.onload = function() {
       document.getElementById('msciWorld').value = data.msciWorld ?? 85;
       document.getElementById('msciEM').value = data.msciEM ?? 15;
       document.getElementById('rendement').value = data.rendement ?? 7;
+      document.getElementById('fraisCourtage').value = data.fraisCourtage ?? 0.2;
       document.getElementById('age').value = data.age ?? 17;
       document.getElementById('livretA').value = data.livretA ?? 3000;
       document.getElementById('compteCourant').value = data.compteCourant ?? 0;
@@ -232,6 +269,7 @@ function sauvegarder() {
       msciWorld: Number(document.getElementById('msciWorld').value) || 85,
       msciEM: Number(document.getElementById('msciEM').value) || 15,
       rendement: Number(document.getElementById('rendement').value) || 7,
+      fraisCourtage: Number(document.getElementById('fraisCourtage').value) || 0.2,
       age: Number(document.getElementById('age').value) || 17,
       livretA: Number(document.getElementById('livretA').value) || 0,
       compteCourant: Number(document.getElementById('compteCourant').value) || 0,
@@ -255,13 +293,15 @@ function calculer() {
   const livretA = Number(document.getElementById('livretA').value) || 0;
   const compteCourant = Number(document.getElementById('compteCourant').value) || 0;
   const rendementAnn = Number(document.getElementById('rendement').value) || 7;
-  const rendement = rendementAnn / 100;
+  const fraisCourtage = Number(document.getElementById('fraisCourtage').value) || 0.2;
+  const rendement = (rendementAnn - fraisCourtage) / 100; // Rendement net après frais
   const age = Number(document.getElementById('age').value) || 17;
   const investissement = Number(document.getElementById('investissement').value) || 0;
 
   const today = new Date();
   let valeurPEA = 0;
   let totalVerse = 0;
+  let totalFrais = 0;
 
   historiqueMois.sort((a,b) => a.date - b.date);
 
@@ -270,13 +310,27 @@ function calculer() {
     let monthsElapsed = (today.getFullYear() - depDate.getFullYear()) * 12 + (today.getMonth() - depDate.getMonth());
     if (monthsElapsed < 0) monthsElapsed = 0;
     const monthlyRate = rendement / 12;
-    const value = item.montant * Math.pow(1 + monthlyRate, monthsElapsed);
+    const fraisMontant = item.montant * (fraisCourtage / 100);
+    const montantNet = item.montant - fraisMontant;
+    const value = montantNet * Math.pow(1 + monthlyRate, monthsElapsed);
     valeurPEA += value;
     totalVerse += item.montant;
+    totalFrais += fraisMontant;
   });
 
-  const plusValue = valeurPEA - totalVerse;
+  const plusValue = valeurPEA - (totalVerse - totalFrais);
   const capitalTotal = livretA + compteCourant + valeurPEA;
+
+  // Calcul du rendement réel
+  let rendementReel = 0;
+  if (totalVerse > 0 && historiqueMois.length > 0) {
+    const firstDate = historiqueMois[0].date;
+    const monthsTotal = (today.getFullYear() - firstDate.getFullYear()) * 12 + (today.getMonth() - firstDate.getMonth());
+    if (monthsTotal > 0) {
+      const yearsTotal = monthsTotal / 12;
+      rendementReel = (Math.pow(valeurPEA / (totalVerse - totalFrais), 1 / yearsTotal) - 1) * 100;
+    }
+  }
 
   const progressionPct = (capitalTotal / 1000000 * 100);
   const progressionPctText = progressionPct.toFixed(2);
@@ -284,6 +338,8 @@ function calculer() {
   console.log('Plus-value calculée:', plusValue);
   console.log('Valeur PEA:', valeurPEA);
   console.log('Total versé:', totalVerse);
+  console.log('Total frais:', totalFrais);
+  console.log('Rendement réel:', rendementReel);
 
   document.getElementById('capitalTotal').textContent = formatEuro(capitalTotal);
   document.getElementById('valeurPEA').textContent = formatEuro(valeurPEA);
@@ -293,6 +349,9 @@ function calculer() {
   const plusValueText = (plusValue >= 0 ? '+ ' : '- ') + formatEuro(Math.abs(plusValue));
   plusValueElement.textContent = plusValueText;
   plusValueElement.style.color = plusValue >= 0 ? '#39b46e' : '#e53e3e';
+  
+  // Affichage du rendement réel
+  document.getElementById('rendementReel').textContent = rendementReel.toFixed(2) + '% / an';
   
   console.log('Plus-value affichée:', plusValueText);
   
@@ -304,6 +363,7 @@ function calculer() {
 
   afficherHistorique();
   afficherProjection(capitalTotal, investissement, rendement, age);
+  creerGraphique();
   sauvegarder();
   
   console.log('Calcul terminé!');
@@ -430,6 +490,138 @@ function afficherProjection(capitalActuel, investissement, rendementAnn, ageActu
 function formatEuro(valeur) {
   if (valeur === null || valeur === undefined || isNaN(Number(valeur))) return '0 €';
   return Math.round(Number(valeur)).toLocaleString('fr-FR') + ' €';
+}
+
+// Nouvelle fonction : Graphique d'évolution
+function creerGraphique() {
+  if (historiqueMois.length === 0) return;
+  
+  const rendementAnn = Number(document.getElementById('rendement').value) || 7;
+  const fraisCourtage = Number(document.getElementById('fraisCourtage').value) || 0.2;
+  const rendement = (rendementAnn - fraisCourtage) / 100;
+  const today = new Date();
+  
+  // Trier par date
+  historiqueMois.sort((a,b) => a.date - b.date);
+  
+  const labels = [];
+  const data = [];
+  let cumulVerse = 0;
+  let cumulValeur = 0;
+  
+  historiqueMois.forEach(item => {
+    const depDate = item.date instanceof Date ? item.date : new Date(item.mois + '-01');
+    let monthsElapsed = (today.getFullYear() - depDate.getFullYear()) * 12 + (today.getMonth() - depDate.getMonth());
+    if (monthsElapsed < 0) monthsElapsed = 0;
+    const monthlyRate = rendement / 12;
+    const fraisMontant = item.montant * (fraisCourtage / 100);
+    const montantNet = item.montant - fraisMontant;
+    const value = montantNet * Math.pow(1 + monthlyRate, monthsElapsed);
+    cumulValeur += value;
+    cumulVerse += item.montant;
+    
+    labels.push(depDate.toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' }));
+    data.push(Math.round(cumulValeur));
+  });
+  
+  const ctx = document.getElementById('chartEvolution');
+  if (!ctx) return;
+  
+  // Détruire l'ancien graphique s'il existe
+  if (chartInstance) {
+    chartInstance.destroy();
+  }
+  
+  chartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Valeur du portefeuille',
+        data: data,
+        borderColor: '#39b46e',
+        backgroundColor: 'rgba(57, 180, 110, 0.1)',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: {
+          labels: { color: '#e2e8f0', font: { size: 14 } }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { 
+            color: '#9ca3af',
+            callback: function(value) {
+              return value.toLocaleString('fr-FR') + ' €';
+            }
+          },
+          grid: { color: '#374151' }
+        },
+        x: {
+          ticks: { color: '#9ca3af' },
+          grid: { color: '#374151' }
+        }
+      }
+    }
+  });
+}
+
+// Nouvelle fonction : Calculateur d'objectif
+function calculerObjectif() {
+  const objectifMontant = Number(document.getElementById('objectifMontant').value) || 1000000;
+  const objectifAge = Number(document.getElementById('objectifAge').value) || 45;
+  const ageActuel = Number(document.getElementById('age').value) || 17;
+  const rendementAnn = Number(document.getElementById('rendement').value) || 7;
+  const fraisCourtage = Number(document.getElementById('fraisCourtage').value) || 0.2;
+  const livretA = Number(document.getElementById('livretA').value) || 0;
+  const compteCourant = Number(document.getElementById('compteCourant').value) || 0;
+  
+  // Calculer la valeur actuelle du PEA
+  const today = new Date();
+  const rendement = (rendementAnn - fraisCourtage) / 100;
+  let valeurPEAActuelle = 0;
+  
+  historiqueMois.forEach(item => {
+    const depDate = item.date instanceof Date ? item.date : new Date(item.mois + '-01');
+    let monthsElapsed = (today.getFullYear() - depDate.getFullYear()) * 12 + (today.getMonth() - depDate.getMonth());
+    if (monthsElapsed < 0) monthsElapsed = 0;
+    const monthlyRate = rendement / 12;
+    const fraisMontant = item.montant * (fraisCourtage / 100);
+    const montantNet = item.montant - fraisMontant;
+    const value = montantNet * Math.pow(1 + monthlyRate, monthsElapsed);
+    valeurPEAActuelle += value;
+  });
+  
+  const capitalActuel = livretA + compteCourant + valeurPEAActuelle;
+  const years = objectifAge - ageActuel;
+  
+  if (years <= 0) {
+    alert('⚠️ L\'âge cible doit être supérieur à ton âge actuel !');
+    return;
+  }
+  
+  const months = years * 12;
+  const monthlyRate = rendement / 12;
+  
+  // Formule inversée pour calculer le versement mensuel nécessaire
+  // Objectif = Capital_actuel * (1+r)^n + Versement * ((1+r)^n - 1) / r
+  // Versement = (Objectif - Capital_actuel * (1+r)^n) * r / ((1+r)^n - 1)
+  
+  const facteur = Math.pow(1 + monthlyRate, months);
+  const investissementMensuel = ((objectifMontant - capitalActuel * facteur) * monthlyRate) / (facteur - 1);
+  
+  document.getElementById('objMontant').textContent = formatEuro(objectifMontant);
+  document.getElementById('objAge').textContent = objectifAge;
+  document.getElementById('objInvestissement').textContent = formatEuro(Math.max(0, investissementMensuel));
+  document.getElementById('resultatObjectif').style.display = 'block';
 }
 </script>
 </body>

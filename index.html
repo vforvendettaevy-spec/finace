@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Dashboard PEA - LUKA_INVEST_PRO</title>
 <style>
-/* Styles inspirés de ton design : vert/violet, gros format lisible */
+/* Styles inspirés de ton design : vert/violet, gros format lisible - MODE SOMBRE */
 *{box-sizing:border-box}
 body{
   font-family: "Segoe UI", Roboto, Arial, sans-serif;
-  background: linear-gradient(135deg,#f5f7fa 0%,#e8ecf1 100%);
-  margin:0;padding:22px;color:#24303a;
+  background: linear-gradient(135deg,#0a0e14 0%,#1a1f2e 100%);
+  margin:0;padding:22px;color:#e2e8f0;
 }
 .container{max-width:1400px;margin:0 auto;}
 .header{
@@ -21,32 +21,41 @@ body{
 .header h1{font-size:34px;margin-bottom:6px}
 .header p{opacity:.95;font-size:16px}
 .params-section{
-  background:#fff;border-radius:14px;padding:26px;margin-bottom:22px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.06);
+  background:#1e2433;border-radius:14px;padding:26px;margin-bottom:22px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.4);border:1px solid #2d3748;
 }
-.params-title{font-size:20px;font-weight:700;color:#2d3748;margin-bottom:16px;display:flex;gap:10px;align-items:center}
+.params-title{font-size:20px;font-weight:700;color:#e2e8f0;margin-bottom:16px;display:flex;gap:10px;align-items:center}
 .params-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-.param-item{background:#f7fafc;padding:14px;border-radius:10px;border:1px solid transparent;transition:all .18s}
-.param-item:hover{transform:translateY(-3px);border-color:#39b46e22}
-.param-item label{display:block;font-weight:600;color:#4a5568;margin-bottom:8px}
-.param-item input{width:100%;padding:10px;border-radius:8px;border:1px solid #e2e8f0;font-size:15px}
+.param-item{background:#2d3748;padding:14px;border-radius:10px;border:1px solid #374151;transition:all .18s}
+.param-item:hover{transform:translateY(-3px);border-color:#39b46e;}
+.param-item label{display:block;font-weight:600;color:#cbd5e0;margin-bottom:8px}
+.param-item input{width:100%;padding:10px;border-radius:8px;border:1px solid #4a5568;font-size:15px;background:#1a202c;color:#e2e8f0}
 .btn-primary{background:linear-gradient(135deg,#39b46e 0%,#2d8f57 100%);color:#fff;border:none;padding:12px 28px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(57,180,110,.18);transition:transform .2s}
 .btn-primary:hover{transform:translateY(-3px)}
 .btn-primary:active{transform:translateY(0)}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px 0}
-.stat-card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-.stat-label{font-size:13px;color:#718096;margin-bottom:8px}
-.stat-value{font-size:30px;font-weight:800;color:#2d3748}
-.progress-bar{background:#e6eef0;height:32px;border-radius:18px;overflow:hidden;margin-top:12px}
+.stat-card{background:#1e2433;padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.4);border:1px solid #2d3748}
+.stat-label{font-size:13px;color:#9ca3af;margin-bottom:8px}
+.stat-value{font-size:30px;font-weight:800;color:#e2e8f0}
+.progress-bar{background:#2d3748;height:32px;border-radius:18px;overflow:hidden;margin-top:12px}
 .progress-fill{height:100%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;background:linear-gradient(90deg,#39b46e,#2d8f57);transition:width .5s}
-.chart-section{background:#fff;border-radius:14px;padding:22px;margin-bottom:22px;box-shadow:0 6px 20px rgba(0,0,0,0.05)}
-.section-title{font-size:18px;font-weight:800;color:#2d3748;margin-bottom:14px}
+.chart-section{background:#1e2433;border-radius:14px;padding:22px;margin-bottom:22px;box-shadow:0 6px 20px rgba(0,0,0,0.4);border:1px solid #2d3748}
+.section-title{font-size:18px;font-weight:800;color:#e2e8f0;margin-bottom:14px}
 .table-controls{display:grid;grid-template-columns:200px 160px 120px;gap:10px;margin-bottom:12px}
+.table-controls input[type="month"],
+.table-controls input[type="number"]{
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #4a5568;
+  background:#2d3748;
+  color:#e2e8f0;
+  font-size:15px;
+}
 .btn-add{background:linear-gradient(135deg,#7a6ff0,#6355cc);color:#fff;padding:10px;border-radius:8px;border:none;font-weight:700;cursor:pointer}
 .btn-delete{background:#e53e3e;color:#fff;border:none;padding:8px 10px;border-radius:6px;cursor:pointer}
 table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{padding:12px;text-align:left;border-bottom:1px solid #eef2f6}
-th{background:#fbfcfd;color:#2d3748;font-weight:700;font-size:13px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid #374151;color:#e2e8f0}
+th{background:#2d3748;color:#cbd5e0;font-weight:700;font-size:13px}
 .positive{color:#39b46e;font-weight:800}
 .projection-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:10px}
 .projection-card{background:linear-gradient(135deg,#7a6ff0 0%,#6355cc 100%);color:#fff;padding:16px;border-radius:10px;text-align:center}
@@ -116,7 +125,7 @@ th{background:#fbfcfd;color:#2d3748;font-weight:700;font-size:13px}
     </div>
     <div class="stat-card">
       <div class="stat-label">💹 Plus-value PEA</div>
-      <div class="stat-value positive" id="plusValue">+0 €</div>
+      <div class="stat-value positive" id="plusValue" style="font-size:28px">+0 €</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">🎯 Progression vers 1M€</div>
@@ -273,7 +282,12 @@ function calculer() {
 
   document.getElementById('capitalTotal').textContent = formatEuro(capitalTotal);
   document.getElementById('valeurPEA').textContent = formatEuro(valeurPEA);
-  document.getElementById('plusValue').textContent = (plusValue >= 0 ? '+' : '') + formatEuro(plusValue);
+  
+  // Amélioration de l'affichage de la plus-value
+  const plusValueElement = document.getElementById('plusValue');
+  plusValueElement.textContent = (plusValue >= 0 ? '+' : '') + formatEuro(plusValue);
+  plusValueElement.className = plusValue >= 0 ? 'stat-value positive' : 'stat-value';
+  
   document.getElementById('progression').textContent = progressionPctText + '%';
   const width = Math.min(Math.max(progressionPct, 0), 100);
   const bar = document.getElementById('progressBar');

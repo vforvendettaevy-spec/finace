@@ -7,8 +7,8 @@
 <style>
 *{box-sizing:border-box}
 body{
-  font-family: "Segoe UI", Roboto, Arial, sans-serif;
-  background: linear-gradient(135deg,#f5f7fa 0%,#e8ecf1 100%);
+  font-family:"Segoe UI",Roboto,Arial,sans-serif;
+  background:linear-gradient(135deg,#f5f7fa 0%,#e8ecf1 100%);
   margin:0;padding:22px;color:#24303a;
 }
 .container{max-width:1400px;margin:0 auto;}
@@ -65,34 +65,13 @@ th{background:#fbfcfd;color:#2d3748;font-weight:700;font-size:13px}
   <div class="params-section">
     <div class="params-title">⚙️ Mes paramètres</div>
     <div class="params-grid">
-      <div class="param-item">
-        <label>💰 Revenu mensuel (€)</label>
-        <input id="revenu" type="number" value="1200" min="0" />
-      </div>
-      <div class="param-item">
-        <label>📈 Investissement mensuel (€)</label>
-        <input id="investissement" type="number" value="900" min="0" />
-      </div>
-      <div class="param-item">
-        <label>🌍 MSCI World (%)</label>
-        <input id="msciWorld" type="number" value="85" min="0" max="100" />
-      </div>
-      <div class="param-item">
-        <label>🌏 Marchés émergents (%)</label>
-        <input id="msciEM" type="number" value="15" min="0" max="100" />
-      </div>
-      <div class="param-item">
-        <label>📊 Rendement annuel (%)</label>
-        <input id="rendement" type="number" value="7" step="0.1" min="0" />
-      </div>
-      <div class="param-item">
-        <label>🎂 Mon âge actuel</label>
-        <input id="age" type="number" value="17" min="0" />
-      </div>
-      <div class="param-item">
-        <label>💚 Livret A (€)</label>
-        <input id="livretA" type="number" value="3000" min="0" />
-      </div>
+      <div class="param-item"><label>💰 Revenu mensuel (€)</label><input id="revenu" type="number" value="1200" min="0" /></div>
+      <div class="param-item"><label>📈 Investissement mensuel (€)</label><input id="investissement" type="number" value="900" min="0" /></div>
+      <div class="param-item"><label>🌍 MSCI World (%)</label><input id="msciWorld" type="number" value="85" min="0" max="100" /></div>
+      <div class="param-item"><label>🌏 Marchés émergents (%)</label><input id="msciEM" type="number" value="15" min="0" max="100" /></div>
+      <div class="param-item"><label>📊 Rendement annuel (%)</label><input id="rendement" type="number" value="7" step="0.1" min="0" /></div>
+      <div class="param-item"><label>🎂 Mon âge actuel</label><input id="age" type="number" value="17" min="0" /></div>
+      <div class="param-item"><label>💚 Livret A (€)</label><input id="livretA" type="number" value="3000" min="0" /></div>
     </div>
     <div style="text-align:center;margin-top:16px">
       <button class="btn-primary" onclick="calculer()">🚀 Calculer ma projection</button>
@@ -100,71 +79,15 @@ th{background:#fbfcfd;color:#2d3748;font-weight:700;font-size:13px}
   </div>
 
   <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-label">💰 Capital total estimé</div>
-      <div class="stat-value" id="capitalTotal">0 €</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">📈 Valeur PEA</div>
-      <div class="stat-value" id="valeurPEA">0 €</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">💹 Plus-value PEA</div>
-      <div class="stat-value positive" id="plusValue">+0 €</div>
-    </div>
+    <div class="stat-card"><div class="stat-label">💰 Capital total estimé</div><div class="stat-value" id="capitalTotal">0 €</div></div>
+    <div class="stat-card"><div class="stat-label">📈 Valeur PEA</div><div class="stat-value" id="valeurPEA">0 €</div></div>
+    <div class="stat-card"><div class="stat-label">💹 Plus-value PEA</div><div class="stat-value positive" id="plusValue">+0 €</div></div>
     <div class="stat-card">
       <div class="stat-label">🎯 Progression vers 1M€</div>
       <div class="stat-value" id="progression">0%</div>
       <div class="progress-bar"><div id="progressBar" class="progress-fill" style="width:0%">0%</div></div>
     </div>
   </div>
-
-  <div class="chart-section">
-    <div class="section-title">🔮 Ma projection jusqu'à 45 ans</div>
-    <div id="projectionGrid" class="projection-grid"></div>
-  </div>
-
-  <div class="chart-section">
-    <div class="section-title">📅 Historique d'investissement</div>
-    <div class="table-controls">
-      <input id="nouveauMois" type="month" />
-      <input id="nouveauMontant" type="number" placeholder="Montant (€)" value="900" />
-      <button class="btn-add" onclick="ajouterMois()">➕ Ajouter</button>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>📅 Mois</th>
-          <th>💰 Versement</th>
-          <th>🌍 MSCI World</th>
-          <th>🌏 Émergents</th>
-          <th>📈 Valeur cumulée</th>
-          <th>💹 Plus-value</th>
-          <th>🗑️</th>
-        </tr>
-      </thead>
-      <tbody id="historique"></tbody>
-    </table>
-  </div>
-
-  <div class="chart-section">
-    <div class="section-title">📊 Projection détaillée par âge</div>
-    <table id="tableProjection">
-      <thead>
-        <tr>
-          <th>🎂 Âge</th>
-          <th>⏱️ Années</th>
-          <th>💰 Total versé (est.)</th>
-          <th>📈 Capital estimé</th>
-          <th>💹 Plus-value</th>
-        </tr>
-      </thead>
-      <tbody id="projectionBody"></tbody>
-    </table>
-  </div>
-</div>
-
 <script>
 let historiqueMois = [];
 
@@ -313,4 +236,52 @@ function afficherHistorique() {
       <td>${formatEuro(item.em)}</td>
       <td class="positive"><strong>${formatEuro(valeurCumulee)}</strong></td>
       <td class="positive">${(plusValue>=0?'+':'')}${formatEuro(plusValue)}</td>
-      <td><button class="btn-delete" data-id="${item.id}" title="Supprimer">🗑️</button
+      <td><button class="btn-delete" data-id="${item.id}" title="Supprimer">🗑️</button></td>
+    </tr>`;
+  });
+  tbody.innerHTML=html;
+}
+
+document.addEventListener('click',function(e){
+  const t=e.target;
+  if(t&&t.classList&&t.classList.contains('btn-delete')){
+    const id=t.getAttribute('data-id');
+    if(id) supprimerMois(id);
+  }
+});
+
+function afficherProjection(capitalActuel,investissement,rendementAnn,ageActuel){
+  const ages=[20,25,30,35,40,45];
+  const grid=document.getElementById('projectionGrid');
+  const tbody=document.getElementById('projectionBody');
+  grid.innerHTML='';tbody.innerHTML='';
+  const monthlyRate=rendementAnn/12;
+  ages.forEach(age=>{
+    if(age<=ageActuel)return;
+    const years=age-ageActuel;
+    const months=years*12;
+    let capitalFinal;
+    if(monthlyRate===0){
+      capitalFinal=capitalActuel+investissement*months;
+    }else{
+      capitalFinal=capitalActuel*Math.pow(1+monthlyRate,months)+investissement*((Math.pow(1+monthlyRate,months)-1)/monthlyRate);
+    }
+    const totalVerse=capitalActuel+investissement*months;
+    const plusValue=capitalFinal-totalVerse;
+    const card=document.createElement('div');
+    card.className='projection-card';
+    card.innerHTML=`<div class="projection-age">${age} ans</div><div class="projection-amount">${formatEuro(capitalFinal)}</div>`;
+    grid.appendChild(card);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><strong>${age} ans</strong></td><td>${years} an${years>1?'s':''}</td><td>${formatEuro(totalVerse)}</td><td class="positive"><strong>${formatEuro(capitalFinal)}</strong></td><td class="positive">${(plusValue>=0?'+':'')}${formatEuro(plusValue)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function formatEuro(valeur){
+  if(valeur===null||valeur===undefined||isNaN(Number(valeur)))return'0 €';
+  return Math.round(Number(valeur)).toLocaleString('fr-FR')+' €';
+}
+</script>
+</body>
+</html>

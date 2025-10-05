@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Dashboard PEA - LUKA_INVEST_PRO</title>
 <style>
+/* Styles inspirés de ton design : vert/violet, gros format lisible */
 *{box-sizing:border-box}
 body{
-  font-family:"Segoe UI",Roboto,Arial,sans-serif;
-  background:linear-gradient(135deg,#f5f7fa 0%,#e8ecf1 100%);
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(135deg,#f5f7fa 0%,#e8ecf1 100%);
   margin:0;padding:22px;color:#24303a;
 }
 .container{max-width:1400px;margin:0 auto;}
@@ -65,13 +66,34 @@ th{background:#fbfcfd;color:#2d3748;font-weight:700;font-size:13px}
   <div class="params-section">
     <div class="params-title">⚙️ Mes paramètres</div>
     <div class="params-grid">
-      <div class="param-item"><label>💰 Revenu mensuel (€)</label><input id="revenu" type="number" value="1200" min="0" /></div>
-      <div class="param-item"><label>📈 Investissement mensuel (€)</label><input id="investissement" type="number" value="900" min="0" /></div>
-      <div class="param-item"><label>🌍 MSCI World (%)</label><input id="msciWorld" type="number" value="85" min="0" max="100" /></div>
-      <div class="param-item"><label>🌏 Marchés émergents (%)</label><input id="msciEM" type="number" value="15" min="0" max="100" /></div>
-      <div class="param-item"><label>📊 Rendement annuel (%)</label><input id="rendement" type="number" value="7" step="0.1" min="0" /></div>
-      <div class="param-item"><label>🎂 Mon âge actuel</label><input id="age" type="number" value="17" min="0" /></div>
-      <div class="param-item"><label>💚 Livret A (€)</label><input id="livretA" type="number" value="3000" min="0" /></div>
+      <div class="param-item">
+        <label>💰 Revenu mensuel (€)</label>
+        <input id="revenu" type="number" value="1200" min="0" />
+      </div>
+      <div class="param-item">
+        <label>📈 Investissement mensuel (€)</label>
+        <input id="investissement" type="number" value="900" min="0" />
+      </div>
+      <div class="param-item">
+        <label>🌍 MSCI World (%)</label>
+        <input id="msciWorld" type="number" value="85" min="0" max="100" />
+      </div>
+      <div class="param-item">
+        <label>🌏 Marchés émergents (%)</label>
+        <input id="msciEM" type="number" value="15" min="0" max="100" />
+      </div>
+      <div class="param-item">
+        <label>📊 Rendement annuel (%)</label>
+        <input id="rendement" type="number" value="7" step="0.1" min="0" />
+      </div>
+      <div class="param-item">
+        <label>🎂 Mon âge actuel</label>
+        <input id="age" type="number" value="17" min="0" />
+      </div>
+      <div class="param-item">
+        <label>💚 Livret A (€)</label>
+        <input id="livretA" type="number" value="3000" min="0" />
+      </div>
     </div>
     <div style="text-align:center;margin-top:16px">
       <button class="btn-primary" onclick="calculer()">🚀 Calculer ma projection</button>
@@ -79,60 +101,85 @@ th{background:#fbfcfd;color:#2d3748;font-weight:700;font-size:13px}
   </div>
 
   <div class="stats-grid">
-    <div class="stat-card"><div class="stat-label">💰 Capital total estimé</div><div class="stat-value" id="capitalTotal">0 €</div></div>
-    <div class="stat-card"><div class="stat-label">📈 Valeur PEA</div><div class="stat-value" id="valeurPEA">0 €</div></div>
-    <div class="stat-card"><div class="stat-label">💹 Plus-value PEA</div><div class="stat-value positive" id="plusValue">+0 €</div></div>
+    <div class="stat-card">
+      <div class="stat-label">💰 Capital total estimé</div>
+      <div class="stat-value" id="capitalTotal">0 €</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">📈 Valeur PEA</div>
+      <div class="stat-value" id="valeurPEA">0 €</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">💹 Plus-value PEA</div>
+      <div class="stat-value positive" id="plusValue">+0 €</div>
+    </div>
     <div class="stat-card">
       <div class="stat-label">🎯 Progression vers 1M€</div>
       <div class="stat-value" id="progression">0%</div>
       <div class="progress-bar"><div id="progressBar" class="progress-fill" style="width:0%">0%</div></div>
     </div>
   </div>
+
+  <div class="chart-section">
+    <div class="section-title">🔮 Ma projection jusqu'à 45 ans</div>
+    <div id="projectionGrid" class="projection-grid"></div>
+  </div>
+
+  <div class="chart-section">
+    <div class="section-title">📅 Historique d'investissement</div>
+    <div class="table-controls">
+      <input id="nouveauMois" type="month" />
+      <input id="nouveauMontant" type="number" placeholder="Montant (€)" value="900" />
+      <button class="btn-add" onclick="ajouterMois()">➕ Ajouter</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>📅 Mois</th>
+          <th>💰 Versement</th>
+          <th>🌍 MSCI World</th>
+          <th>🌏 Émergents</th>
+          <th>📈 Valeur cumulée</th>
+          <th>💹 Plus-value</th>
+          <th>🗑️</th>
+        </tr>
+      </thead>
+      <tbody id="historique"></tbody>
+    </table>
+  </div>
+
+  <div class="chart-section">
+    <div class="section-title">📊 Projection détaillée par âge</div>
+    <table id="tableProjection">
+      <thead>
+        <tr>
+          <th>🎂 Âge</th>
+          <th>⏱️ Années</th>
+          <th>💰 Total versé (est.)</th>
+          <th>📈 Capital estimé</th>
+          <th>💹 Plus-value</th>
+        </tr>
+      </thead>
+      <tbody id="projectionBody"></tbody>
+    </table>
+  </div>
+</div>
+
 <script>
+/* Dashboard JS complet — suppression via data-id et event delegation */
 let historiqueMois = [];
 
 window.onload = function() {
-  const saved = localStorage.getItem('dashboardData');
-  if (saved) {
-    try {
-      const data = JSON.parse(saved);
-      document.getElementById('revenu').value = data.revenu ?? 1200;
-      document.getElementById('investissement').value = data.investissement ?? 900;
-      document.getElementById('msciWorld').value = data.msciWorld ?? 85;
-      document.getElementById('msciEM').value = data.msciEM ?? 15;
-      document.getElementById('rendement').value = data.rendement ?? 7;
-      document.getElementById('age').value = data.age ?? 17;
-      document.getElementById('livretA').value = data.livretA ?? 3000;
-      historiqueMois = (data.historique || []).map(item => ({
-        mois: item.mois,
-        montant: Number(item.montant) || 0,
-        world: Number(item.world) || 0,
-        em: Number(item.em) || 0,
-        date: new Date((item.mois || '') + '-01'),
-        id: Number(item.id) || Date.now() + Math.floor(Math.random()*1000)
-      }));
-      historiqueMois.sort((a,b) => a.date - b.date);
-    } catch(e) {
-      historiqueMois = [];
-    }
-  }
   calculer();
 };
 
+// save to localStorage
 function sauvegarder() {
-  const data = {
-    revenu: Number(document.getElementById('revenu').value) || 0,
-    investissement: Number(document.getElementById('investissement').value) || 0,
-    msciWorld: Number(document.getElementById('msciWorld').value) || 85,
-    msciEM: Number(document.getElementById('msciEM').value) || 15,
-    rendement: Number(document.getElementById('rendement').value) || 7,
-    age: Number(document.getElementById('age').value) || 17,
-    livretA: Number(document.getElementById('livretA').value) || 0,
-    historique: historiqueMois.map(h => ({mois:h.mois,montant:h.montant,world:h.world,em:h.em,id:h.id}))
-  };
-  localStorage.setItem('dashboardData', JSON.stringify(data));
+  // Fonction désactivée pour Claude.ai (localStorage non disponible)
 }
 
+// main recalcul
 function calculer() {
   const livretA = Number(document.getElementById('livretA').value) || 0;
   const rendementAnn = Number(document.getElementById('rendement').value) || 7;
@@ -140,31 +187,20 @@ function calculer() {
   const age = Number(document.getElementById('age').value) || 17;
   const investissement = Number(document.getElementById('investissement').value) || 0;
 
-  // ✅ correction : créer une ligne par défaut si historique vide
-  if (historiqueMois.length === 0 && investissement > 0) {
-    const now = new Date();
-    const mois = now.toISOString().slice(0,7);
-    historiqueMois.push({
-      mois: mois,
-      montant: investissement,
-      world: investissement * 0.85,
-      em: investissement * 0.15,
-      date: new Date(mois + '-01'),
-      id: Date.now()
-    });
-  }
-
+  // compute PEA value by compounding each historical deposit to 'today'
   const today = new Date();
   let valeurPEA = 0;
   let totalVerse = 0;
 
+  // Ensure historique is sorted ascending
   historiqueMois.sort((a,b) => a.date - b.date);
 
   historiqueMois.forEach(item => {
     const depDate = item.date instanceof Date ? item.date : new Date(item.mois + '-01');
-    let monthsElapsed = (today.getFullYear()-depDate.getFullYear())*12+(today.getMonth()-depDate.getMonth());
-    if (monthsElapsed < 0) monthsElapsed = 0;
-    const monthlyRate = rendement/12;
+    // months difference between depDate and today
+    let monthsElapsed = (today.getFullYear() - depDate.getFullYear()) * 12 + (today.getMonth() - depDate.getMonth());
+    if (monthsElapsed < 0) monthsElapsed = 0; // future deposit => no growth yet
+    const monthlyRate = rendement / 12;
     const value = item.montant * Math.pow(1 + monthlyRate, monthsElapsed);
     valeurPEA += value;
     totalVerse += item.montant;
@@ -178,9 +214,9 @@ function calculer() {
 
   document.getElementById('capitalTotal').textContent = formatEuro(capitalTotal);
   document.getElementById('valeurPEA').textContent = formatEuro(valeurPEA);
-  document.getElementById('plusValue').textContent = (plusValue>=0?'+':'') + formatEuro(plusValue);
+  document.getElementById('plusValue').textContent = (plusValue >= 0 ? '+' : '') + formatEuro(plusValue);
   document.getElementById('progression').textContent = progressionPctText + '%';
-  const width = Math.min(Math.max(progressionPct,0),100);
+  const width = Math.min(Math.max(progressionPct, 0), 100);
   const bar = document.getElementById('progressBar');
   bar.style.width = width + '%';
   bar.textContent = progressionPctText + '%';
@@ -190,97 +226,138 @@ function calculer() {
   sauvegarder();
 }
 
+// Ajoute un mois depuis input type="month"
 function ajouterMois() {
-  const mois = document.getElementById('nouveauMois').value;
+  const mois = document.getElementById('nouveauMois').value; // format "YYYY-MM"
   const montant = Number(document.getElementById('nouveauMontant').value) || 0;
-  if (!mois || montant <= 0) {alert('❌ Remplis correctement le mois et le montant.');return;}
-  const msciWorldPct = (Number(document.getElementById('msciWorld').value) || 85)/100;
-  const msciEMPct = (Number(document.getElementById('msciEM').value) || 15)/100;
-
-  const obj={mois:mois,montant:montant,world:Math.round(montant*msciWorldPct*100)/100,em:Math.round(montant*msciEMPct*100)/100,date:new Date(mois+'-01'),id:Date.now()+Math.floor(Math.random()*1000)};
-  historiqueMois.push(obj);
-  historiqueMois.sort((a,b)=>a.date-b.date);
-  document.getElementById('nouveauMois').value='';
-  calculer();
-}
-
-function supprimerMois(id) {
-  if (!confirm('Supprimer cet enregistrement ?')) return;
-  historiqueMois = historiqueMois.filter(m=>Number(m.id)!==Number(id));
-  calculer();
-}
-
-function afficherHistorique() {
-  const tbody = document.getElementById('historique');
-  if (historiqueMois.length===0) {
-    tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:#718096">Aucun investissement enregistré. Ajoute ton premier mois !</td></tr>';
+  if (!mois || montant <= 0) {
+    alert('❌ Remplis correctement le mois et le montant.');
     return;
   }
-  const rendement = Number(document.getElementById('rendement').value)/100 || 0.07;
-  const today = new Date();
-  let valeurCumulee=0,totalVerse=0,html='';
-  historiqueMois.forEach(item=>{
-    const depDate=item.date instanceof Date?item.date:new Date(item.mois+'-01');
-    let monthsElapsed=(today.getFullYear()-depDate.getFullYear())*12+(today.getMonth()-depDate.getMonth());
-    if (monthsElapsed<0)monthsElapsed=0;
-    const monthlyRate=rendement/12;
-    const valueThis=item.montant*Math.pow(1+monthlyRate,monthsElapsed);
-    valeurCumulee+=valueThis;
-    totalVerse+=item.montant;
-    const plusValue=valeurCumulee-totalVerse;
-    const moisFormate=depDate.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
-    html+=`<tr>
-      <td>${moisFormate}</td>
-      <td><strong>${formatEuro(item.montant)}</strong></td>
-      <td>${formatEuro(item.world)}</td>
-      <td>${formatEuro(item.em)}</td>
-      <td class="positive"><strong>${formatEuro(valeurCumulee)}</strong></td>
-      <td class="positive">${(plusValue>=0?'+':'')}${formatEuro(plusValue)}</td>
-      <td><button class="btn-delete" data-id="${item.id}" title="Supprimer">🗑️</button></td>
-    </tr>`;
-  });
-  tbody.innerHTML=html;
+  const msciWorldPct = (Number(document.getElementById('msciWorld').value) || 85) / 100;
+  const msciEMPct = (Number(document.getElementById('msciEM').value) || 15) / 100;
+
+  const obj = {
+    mois: mois,
+    montant: montant,
+    world: Math.round(montant * msciWorldPct * 100) / 100,
+    em: Math.round(montant * msciEMPct * 100) / 100,
+    date: new Date(mois + '-01'),
+    id: Date.now() + Math.floor(Math.random()*1000)
+  };
+
+  historiqueMois.push(obj);
+  // sort ascending
+  historiqueMois.sort((a,b) => a.date - b.date);
+  document.getElementById('nouveauMois').value = '';
+  document.getElementById('nouveauMontant').value = montant; // keep value for convenience
+  calculer();
 }
 
-document.addEventListener('click',function(e){
-  const t=e.target;
-  if(t&&t.classList&&t.classList.contains('btn-delete')){
-    const id=t.getAttribute('data-id');
-    if(id) supprimerMois(id);
+// suppression via id
+function supprimerMois(id) {
+  if (!confirm('Supprimer cet enregistrement ?')) return;
+  historiqueMois = historiqueMois.filter(m => Number(m.id) !== Number(id));
+  calculer();
+}
+
+// affichage du tableau historique
+function afficherHistorique() {
+  const tbody = document.getElementById('historique');
+  if (historiqueMois.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#718096">Aucun investissement enregistré. Ajoute ton premier mois !</td></tr>';
+    return;
+  }
+
+  const rendement = Number(document.getElementById('rendement').value) / 100 || 0.07;
+  const today = new Date();
+  let valeurCumulee = 0;
+  let totalVerse = 0;
+  let html = '';
+
+  // iterate in chronological order
+  historiqueMois.forEach((item, index) => {
+    const depDate = item.date instanceof Date ? item.date : new Date(item.mois + '-01');
+    let monthsElapsed = (today.getFullYear() - depDate.getFullYear()) * 12 + (today.getMonth() - depDate.getMonth());
+    if (monthsElapsed < 0) monthsElapsed = 0;
+    const monthlyRate = rendement / 12;
+    const valueThis = item.montant * Math.pow(1 + monthlyRate, monthsElapsed);
+    valeurCumulee += valueThis;
+    totalVerse += item.montant;
+    const plusValue = valeurCumulee - totalVerse;
+    const moisFormate = depDate.toLocaleDateString('fr-FR', { month:'long', year:'numeric' });
+
+    html += `
+      <tr>
+        <td>${moisFormate}</td>
+        <td><strong>${formatEuro(item.montant)}</strong></td>
+        <td>${formatEuro(item.world)}</td>
+        <td>${formatEuro(item.em)}</td>
+        <td class="positive"><strong>${formatEuro(valeurCumulee)}</strong></td>
+        <td class="positive">${(plusValue>=0?'+':'')}${formatEuro(plusValue)}</td>
+        <td><button class="btn-delete" data-id="${item.id}" title="Supprimer">🗑️</button></td>
+      </tr>
+    `;
+  });
+
+  tbody.innerHTML = html;
+}
+
+// event delegation pour boutons delete
+document.addEventListener('click', function(e) {
+  const t = e.target;
+  if (t && t.classList && t.classList.contains('btn-delete')) {
+    const id = t.getAttribute('data-id');
+    if (id) supprimerMois(id);
   }
 });
 
-function afficherProjection(capitalActuel,investissement,rendementAnn,ageActuel){
-  const ages=[20,25,30,35,40,45];
-  const grid=document.getElementById('projectionGrid');
-  const tbody=document.getElementById('projectionBody');
-  grid.innerHTML='';tbody.innerHTML='';
-  const monthlyRate=rendementAnn/12;
-  ages.forEach(age=>{
-    if(age<=ageActuel)return;
-    const years=age-ageActuel;
-    const months=years*12;
+// projection jusqu'à 45 ans
+function afficherProjection(capitalActuel, investissement, rendementAnn, ageActuel) {
+  const ages = [20,25,30,35,40,45];
+  const grid = document.getElementById('projectionGrid');
+  const tbody = document.getElementById('projectionBody');
+  grid.innerHTML = '';
+  tbody.innerHTML = '';
+
+  const monthlyRate = rendementAnn / 12; // rendementAnn passed as decimal e.g. 0.07
+
+  ages.forEach(age => {
+    if (age <= ageActuel) return;
+    const years = age - ageActuel;
+    const months = years * 12;
+    // formule de capital futur avec versements mensuels (versements à la fin du mois)
     let capitalFinal;
-    if(monthlyRate===0){
-      capitalFinal=capitalActuel+investissement*months;
-    }else{
-      capitalFinal=capitalActuel*Math.pow(1+monthlyRate,months)+investissement*((Math.pow(1+monthlyRate,months)-1)/monthlyRate);
+    if (monthlyRate === 0) {
+      capitalFinal = capitalActuel + investissement * months;
+    } else {
+      capitalFinal = capitalActuel * Math.pow(1 + monthlyRate, months) +
+                     investissement * ( (Math.pow(1 + monthlyRate, months) - 1) / monthlyRate );
     }
-    const totalVerse=capitalActuel+investissement*months;
-    const plusValue=capitalFinal-totalVerse;
-    const card=document.createElement('div');
-    card.className='projection-card';
-    card.innerHTML=`<div class="projection-age">${age} ans</div><div class="projection-amount">${formatEuro(capitalFinal)}</div>`;
+    const totalVerse = capitalActuel + investissement * months;
+    const plusValue = capitalFinal - totalVerse;
+
+    // card
+    const card = document.createElement('div');
+    card.className = 'projection-card';
+    card.innerHTML = `<div class="projection-age">${age} ans</div><div class="projection-amount">${formatEuro(capitalFinal)}</div>`;
     grid.appendChild(card);
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td><strong>${age} ans</strong></td><td>${years} an${years>1?'s':''}</td><td>${formatEuro(totalVerse)}</td><td class="positive"><strong>${formatEuro(capitalFinal)}</strong></td><td class="positive">${(plusValue>=0?'+':'')}${formatEuro(plusValue)}</td>`;
+
+    // table row
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><strong>${age} ans</strong></td>
+                    <td>${years} an${years>1?'s':''}</td>
+                    <td>${formatEuro(totalVerse)}</td>
+                    <td class="positive"><strong>${formatEuro(capitalFinal)}</strong></td>
+                    <td class="positive">${(plusValue>=0?'+':'')}${formatEuro(plusValue)}</td>`;
     tbody.appendChild(tr);
   });
 }
 
-function formatEuro(valeur){
-  if(valeur===null||valeur===undefined||isNaN(Number(valeur)))return'0 €';
-  return Math.round(Number(valeur)).toLocaleString('fr-FR')+' €';
+// utilitaire format euro
+function formatEuro(valeur) {
+  if (valeur === null || valeur === undefined || isNaN(Number(valeur))) return '0 €';
+  return Math.round(Number(valeur)).toLocaleString('fr-FR') + ' €';
 }
 </script>
 </body>

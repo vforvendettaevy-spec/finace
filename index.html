@@ -6,67 +6,113 @@
 <title>Dashboard PEA + CTO - LUKA_INVEST_PRO</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📊</text></svg>" />
 <style>
-*{box-sizing:border-box}
-body{font-family:"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(135deg,#0a0e14 0%,#1a1f2e 100%);margin:0;padding:22px;color:#e2e8f0}
-.container{max-width:1600px;margin:0 auto}
-.header{background:linear-gradient(135deg,#39b46e 0%,#2d8f57 100%);color:#fff;padding:36px;border-radius:18px;margin-bottom:26px;box-shadow:0 10px 40px rgba(57,180,110,0.18);text-align:center}
-.header h1{font-size:34px;margin-bottom:6px}
-.header p{opacity:.95;font-size:16px}
-.params-section{background:#1e2433;border-radius:14px;padding:26px;margin-bottom:22px;box-shadow:0 6px 20px rgba(0,0,0,0.4);border:1px solid #2d3748}
-.params-title{font-size:20px;font-weight:700;color:#e2e8f0;margin-bottom:16px;display:flex;gap:10px;align-items:center}
-.params-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-.param-item{background:#2d3748;padding:14px;border-radius:10px;border:1px solid #374151;transition:all .18s}
-.param-item:hover{transform:translateY(-3px);border-color:#39b46e}
-.param-item label{display:block;font-weight:600;color:#cbd5e0;margin-bottom:8px}
-.param-item input{width:100%;padding:10px;border-radius:8px;border:1px solid #4a5568;font-size:15px;background:#1a202c;color:#e2e8f0}
-.btn-primary{background:linear-gradient(135deg,#39b46e 0%,#2d8f57 100%);color:#fff;border:none;padding:12px 28px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(57,180,110,.18);transition:transform .2s}
-.btn-primary:hover{transform:translateY(-3px)}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px 0}
-.stat-card{background:#1e2433;padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.4);border:1px solid #2d3748}
-.stat-card.pea{border-left:4px solid #39b46e}
-.stat-card.cto{border-left:4px solid #7a6ff0}
-.stat-label{font-size:13px;color:#9ca3af;margin-bottom:8px;text-transform:uppercase}
-.stat-value{font-size:28px;font-weight:800;color:#e2e8f0}
-.progress-bar{background:#2d3748;height:32px;border-radius:18px;overflow:hidden;margin-top:12px}
-.progress-fill{height:100%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;background:linear-gradient(90deg,#39b46e,#2d8f57);transition:width .5s}
-.chart-section{background:#1e2433;border-radius:14px;padding:22px;margin-bottom:22px;box-shadow:0 6px 20px rgba(0,0,0,0.4);border:1px solid #2d3748}
-.section-title{font-size:18px;font-weight:800;color:#e2e8f0;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.table-controls{display:grid;grid-template-columns:200px 160px 120px;gap:10px;margin-bottom:12px}
-.table-controls input{padding:10px;border-radius:8px;border:1px solid #4a5568;background:#2d3748;color:#e2e8f0;font-size:15px}
-.btn-add{background:linear-gradient(135deg,#7a6ff0,#6355cc);color:#fff;padding:10px;border-radius:8px;border:none;font-weight:700;cursor:pointer}
-.btn-delete{background:#e53e3e;color:#fff;border:none;padding:8px 10px;border-radius:6px;cursor:pointer}
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{padding:12px;text-align:left;border-bottom:1px solid #374151;color:#e2e8f0}
-th{background:#2d3748;color:#cbd5e0;font-weight:700;font-size:13px}
-.positive{color:#39b46e;font-weight:800}
-.projection-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:10px}
-.projection-card{background:linear-gradient(135deg,#7a6ff0 0%,#6355cc 100%);color:#fff;padding:16px;border-radius:10px;text-align:center}
-.projection-age{font-size:20px;font-weight:800}
-.projection-amount{font-size:15px;opacity:.95}
-.pie-container{display:flex;justify-content:center;align-items:center;gap:40px;flex-wrap:wrap;margin-top:20px}
-.pie-legend{display:flex;flex-direction:column;gap:12px}
-.legend-item{display:flex;align-items:center;gap:10px;font-size:15px}
-.legend-color{width:24px;height:24px;border-radius:4px}
-.legend-label{color:#cbd5e0}
-.legend-value{color:#e2e8f0;font-weight:700;margin-left:auto}
-.scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
-.scenario-card{background:#2d3748;padding:20px;border-radius:12px;border:2px solid #374151}
-.scenario-card.optimiste{border-color:#39b46e}
-.scenario-card.neutre{border-color:#7a6ff0}
-.scenario-card.pessimiste{border-color:#e53e3e}
-.scenario-title{font-size:16px;font-weight:700;margin-bottom:12px;text-align:center}
-.scenario-card.optimiste .scenario-title{color:#39b46e}
-.scenario-card.neutre .scenario-title{color:#7a6ff0}
-.scenario-card.pessimiste .scenario-title{color:#e53e3e}
-.scenario-value{font-size:24px;font-weight:800;text-align:center;margin:8px 0}
-.scenario-detail{font-size:13px;color:#9ca3af;text-align:center}
-.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.tab{padding:10px 20px;background:#2d3748;border:none;border-radius:8px;color:#cbd5e0;font-weight:600;cursor:pointer;transition:all .2s}
-.tab.active{background:linear-gradient(135deg,#39b46e,#2d8f57);color:#fff}
-.tab:hover{transform:translateY(-2px)}
-.tab-content{display:none}
-.tab-content.active{display:block}
-@media (max-width:900px){.scenario-grid{grid-template-columns:1fr}.table-controls{grid-template-columns:1fr 1fr}.pie-container{flex-direction:column}}
+* { box-sizing: border-box; }
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(135deg, #0a0e14 0%, #1a1f2e 100%);
+  margin: 0; padding: 22px; color: #e2e8f0;
+}
+.container { max-width: 1600px; margin: 0 auto; }
+.header {
+  background: linear-gradient(135deg, #39b46e 0%, #2d8f57 100%);
+  color: #fff; padding: 36px; border-radius: 18px; margin-bottom: 26px;
+  box-shadow: 0 10px 40px rgba(57, 180, 110, 0.18); text-align: center;
+}
+.header h1 { font-size: 34px; margin-bottom: 6px; }
+.header p { opacity: 0.95; font-size: 16px; }
+.params-section {
+  background: #1e2433; border-radius: 14px; padding: 26px; margin-bottom: 22px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); border: 1px solid #2d3748;
+}
+.params-title { font-size: 20px; font-weight: 700; color: #e2e8f0; margin-bottom: 16px; display: flex; gap: 10px; align-items: center; }
+.params-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.param-item { background: #2d3748; padding: 14px; border-radius: 10px; border: 1px solid #374151; transition: all 0.18s; }
+.param-item:hover { transform: translateY(-3px); border-color: #39b46e; }
+.param-item label { display: block; font-weight: 600; color: #cbd5e0; margin-bottom: 8px; }
+.param-item input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #4a5568; font-size: 15px; background: #1a202c; color: #e2e8f0; }
+.param-item input:focus { outline: none; border-color: #39b46e; box-shadow: 0 0 0 3px rgba(57, 180, 110, 0.1); }
+.btn-primary {
+  background: linear-gradient(135deg, #39b46e 0%, #2d8f57 100%);
+  color: #fff; border: none; padding: 12px 28px; border-radius: 12px;
+  font-weight: 700; cursor: pointer; box-shadow: 0 6px 18px rgba(57, 180, 110, 0.18);
+  transition: transform 0.2s; font-size: 16px;
+}
+.btn-primary:hover { transform: translateY(-3px); }
+.btn-primary:active { transform: translateY(0); }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0; }
+.stat-card {
+  background: #1e2433; padding: 18px; border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4); border: 1px solid #2d3748;
+}
+.stat-card.pea { border-left: 4px solid #10b981; }
+.stat-card.cto { border-left: 4px solid #7a6ff0; }
+.stat-label { font-size: 13px; color: #9ca3af; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-value { font-size: 28px; font-weight: 800; color: #e2e8f0; }
+.progress-bar { background: #2d3748; height: 32px; border-radius: 18px; overflow: hidden; margin-top: 12px; }
+.progress-fill {
+  height: 100%; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #fff; background: linear-gradient(90deg, #39b46e, #2d8f57);
+  transition: width 0.6s ease;
+}
+.chart-section {
+  background: #1e2433; border-radius: 14px; padding: 22px; margin-bottom: 22px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); border: 1px solid #2d3748;
+}
+.section-title { font-size: 18px; font-weight: 800; color: #e2e8f0; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.table-controls { display: grid; grid-template-columns: 200px 160px 120px; gap: 10px; margin-bottom: 12px; }
+.table-controls input { padding: 10px; border-radius: 8px; border: 1px solid #4a5568; background: #2d3748; color: #e2e8f0; font-size: 15px; }
+.btn-add {
+  background: linear-gradient(135deg, #7a6ff0, #6355cc);
+  color: #fff; padding: 10px 20px; border-radius: 8px; border: none;
+  font-weight: 700; cursor: pointer; transition: transform 0.2s;
+}
+.btn-add:hover { transform: translateY(-2px); }
+.btn-delete { background: #e53e3e; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+.btn-delete:hover { background: #c53030; transform: scale(1.05); }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #374151; color: #e2e8f0; }
+th { background: #2d3748; color: #cbd5e0; font-weight: 700; font-size: 13px; }
+.positive { color: #10b981; font-weight: 800; }
+.projection-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-top: 10px; }
+.projection-card {
+  background: linear-gradient(135deg, #7a6ff0 0%, #6355cc 100%);
+  color: #fff; padding: 16px; border-radius: 10px; text-align: center; transition: transform 0.2s;
+}
+.projection-card:hover { transform: translateY(-3px); }
+.projection-age { font-size: 20px; font-weight: 800; }
+.projection-amount { font-size: 15px; opacity: 0.95; }
+.pie-container { display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; margin-top: 20px; }
+.pie-legend { display: flex; flex-direction: column; gap: 12px; }
+.legend-item { display: flex; align-items: center; gap: 10px; font-size: 15px; }
+.legend-color { width: 24px; height: 24px; border-radius: 4px; }
+.legend-label { color: #cbd5e0; }
+.legend-value { color: #e2e8f0; font-weight: 700; margin-left: auto; }
+.scenario-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+.scenario-card { background: #2d3748; padding: 20px; border-radius: 12px; border: 2px solid #374151; transition: all 0.2s; }
+.scenario-card:hover { transform: translateY(-2px); }
+.scenario-card.pessimiste { border-color: #e53e3e; }
+.scenario-card.neutre { border-color: #7a6ff0; }
+.scenario-card.optimiste { border-color: #10b981; }
+.scenario-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; text-align: center; }
+.scenario-card.pessimiste .scenario-title { color: #e53e3e; }
+.scenario-card.neutre .scenario-title { color: #7a6ff0; }
+.scenario-card.optimiste .scenario-title { color: #10b981; }
+.scenario-value { font-size: 24px; font-weight: 800; text-align: center; margin: 8px 0; }
+.scenario-detail { font-size: 13px; color: #9ca3af; text-align: center; }
+.tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.tab {
+  padding: 10px 20px; background: #2d3748; border: none; border-radius: 8px;
+  color: #cbd5e0; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.tab.active { background: linear-gradient(135deg, #39b46e, #2d8f57); color: #fff; }
+.tab:hover { transform: translateY(-2px); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+@media (max-width: 900px) {
+  .scenario-grid { grid-template-columns: 1fr; }
+  .table-controls { grid-template-columns: 1fr 1fr; }
+  .pie-container { flex-direction: column; }
+}
 </style>
 </head>
 <body>
@@ -91,16 +137,16 @@ th{background:#2d3748;color:#cbd5e0;font-weight:700;font-size:13px}
       <div class="param-item"><label>💚 Livret A (€)</label><input id="livretA" type="number" value="3000" min="0" /></div>
       <div class="param-item"><label>💳 Compte courant (€)</label><input id="compteCourant" type="number" value="0" min="0" /></div>
     </div>
-    <div style="text-align:center;margin-top:16px"><button class="btn-primary" id="btnCalculer">🚀 Calculer ma projection</button></div>
+    <div style="text-align: center; margin-top: 16px;"><button class="btn-primary" id="btnCalculer">🚀 Calculer ma projection</button></div>
   </div>
 
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-label">💰 Capital total</div><div class="stat-value" id="capitalTotal">0 €</div></div>
     <div class="stat-card pea"><div class="stat-label">📈 PEA - Valeur</div><div class="stat-value" id="valeurPEA">0 €</div></div>
-    <div class="stat-card pea"><div class="stat-label">💹 PEA - Plus-value</div><div id="plusValuePEA" style="font-size:24px;font-weight:800;color:#39b46e">+0 €</div></div>
+    <div class="stat-card pea"><div class="stat-label">💹 PEA - Plus-value</div><div id="plusValuePEA" style="font-size: 24px; font-weight: 800; color: #10b981;">+0 €</div></div>
     <div class="stat-card cto"><div class="stat-label">📈 CTO - Valeur</div><div class="stat-value" id="valeurCTO">0 €</div></div>
-    <div class="stat-card cto"><div class="stat-label">💹 CTO - Plus-value</div><div id="plusValueCTO" style="font-size:24px;font-weight:800;color:#7a6ff0">+0 €</div></div>
-    <div class="stat-card"><div class="stat-label">🎯 Progression vers 1M€</div><div class="stat-value" id="progression">0%</div><div class="progress-bar"><div id="progressBar" class="progress-fill" style="width:0%">0%</div></div></div>
+    <div class="stat-card cto"><div class="stat-label">💹 CTO - Plus-value</div><div id="plusValueCTO" style="font-size: 24px; font-weight: 800; color: #7a6ff0;">+0 €</div></div>
+    <div class="stat-card"><div class="stat-label">🎯 Progression vers 1M€</div><div class="stat-value" id="progression">0%</div><div class="progress-bar"><div id="progressBar" class="progress-fill" style="width: 0%;">0%</div></div></div>
   </div>
 
   <div class="chart-section">
@@ -153,7 +199,10 @@ th{background:#2d3748;color:#cbd5e0;font-weight:700;font-size:13px}
 
   <div class="chart-section">
     <div class="section-title">📊 Projection détaillée par âge</div>
-    <table><thead><tr><th>🎂 Âge</th><th>⏱️ Années</th><th>💰 Total versé</th><th>📈 Capital estimé</th><th>💹 Plus-value</th></tr></thead><tbody id="projectionBody"></tbody></table>
+    <table>
+      <thead><tr><th>🎂 Âge</th><th>⏱️ Années</th><th>💰 Total versé</th><th>📈 Capital estimé</th><th>💹 Plus-value</th></tr></thead>
+      <tbody id="projectionBody"></tbody>
+    </table>
   </div>
 
   <div class="chart-section">
@@ -179,61 +228,78 @@ th{background:#2d3748;color:#cbd5e0;font-weight:700;font-size:13px}
 </div>
 
 <script>
+// ========== VARIABLES GLOBALES ==========
 let historiquePEA = [];
 let historiqueCTO = [];
 
+// ========== INITIALISATION ==========
 window.onload = function() {
-  try {
-    const saved = localStorage.getItem('dashboardPEA_CTO');
-    if (saved) {
-      const data = JSON.parse(saved);
-      Object.keys(data).forEach(key => {
-        const el = document.getElementById(key);
-        if (el && el.type === 'number') el.value = data[key];
-      });
-      historiquePEA = data.historiquePEA || [];
-      historiqueCTO = data.historiqueCTO || [];
-    }
-  } catch(e) {
-    console.log('Pas de sauvegarde');
-  }
+  chargerDonnees();
   document.getElementById('btnCalculer').addEventListener('click', calculer);
   calculer();
 };
 
-function sauvegarder() {
-  const data = {
-    revenu: document.getElementById('revenu').value,
-    investissementPEA: document.getElementById('investissementPEA').value,
-    investissementCTO: document.getElementById('investissementCTO').value,
-    peaMsciWorld: document.getElementById('peaMsciWorld').value,
-    peaMsciEM: document.getElementById('peaMsciEM').value,
-    ctoMsciWorld: document.getElementById('ctoMsciWorld').value,
-    ctoMsciEM: document.getElementById('ctoMsciEM').value,
-    rendement: document.getElementById('rendement').value,
-    age: document.getElementById('age').value,
-    livretA: document.getElementById('livretA').value,
-    compteCourant: document.getElementById('compteCourant').value,
-    historiquePEA: historiquePEA,
-    historiqueCTO: historiqueCTO
-  };
-  localStorage.setItem('dashboardPEA_CTO', JSON.stringify(data));
+// ========== SAUVEGARDE / CHARGEMENT ==========
+function chargerDonnees() {
+  try {
+    const saved = localStorage.getItem('dashboardPEA_CTO_FINAL');
+    if (saved) {
+      const data = JSON.parse(saved);
+      Object.keys(data).forEach(key => {
+        const el = document.getElementById(key);
+        if (el && (el.type === 'number' || el.type === 'text')) {
+          el.value = data[key];
+        }
+      });
+      historiquePEA = data.historiquePEA || [];
+      historiqueCTO = data.historiqueCTO || [];
+    }
+  } catch (e) {
+    console.log('Première visite - Pas de données sauvegardées');
+  }
 }
 
+function sauvegarder() {
+  try {
+    const data = {
+      revenu: document.getElementById('revenu').value,
+      investissementPEA: document.getElementById('investissementPEA').value,
+      investissementCTO: document.getElementById('investissementCTO').value,
+      peaMsciWorld: document.getElementById('peaMsciWorld').value,
+      peaMsciEM: document.getElementById('peaMsciEM').value,
+      ctoMsciWorld: document.getElementById('ctoMsciWorld').value,
+      ctoMsciEM: document.getElementById('ctoMsciEM').value,
+      rendement: document.getElementById('rendement').value,
+      age: document.getElementById('age').value,
+      livretA: document.getElementById('livretA').value,
+      compteCourant: document.getElementById('compteCourant').value,
+      historiquePEA: historiquePEA,
+      historiqueCTO: historiqueCTO
+    };
+    localStorage.setItem('dashboardPEA_CTO_FINAL', JSON.stringify(data));
+  } catch (e) {
+    console.warn('Erreur sauvegarde:', e);
+  }
+}
+
+// ========== CALCULS ==========
 function calculerValeur(historique, rendementAnn) {
   const today = new Date();
   const rendement = rendementAnn / 100;
   let valeur = 0;
   let totalVerse = 0;
+
   historique.forEach(item => {
     const depDate = new Date(item.date);
     let months = (today.getFullYear() - depDate.getFullYear()) * 12 + (today.getMonth() - depDate.getMonth());
     if (months < 0) months = 0;
+    
     const monthlyRate = rendement / 12;
     const value = item.montant * Math.pow(1 + monthlyRate, months);
     valeur += value;
     totalVerse += item.montant;
   });
+
   return { valeur, totalVerse, plusValue: valeur - totalVerse };
 }
 
@@ -241,24 +307,28 @@ function calculer() {
   const rend = Number(document.getElementById('rendement').value) || 7;
   const livret = Number(document.getElementById('livretA').value) || 0;
   const courant = Number(document.getElementById('compteCourant').value) || 0;
-  
+
   const pea = calculerValeur(historiquePEA, rend);
   const cto = calculerValeur(historiqueCTO, rend);
   const total = livret + courant + pea.valeur + cto.valeur;
   const prog = (total / 1000000 * 100).toFixed(2);
-  
+
+  // Mise à jour des stats
   document.getElementById('capitalTotal').textContent = formatEuro(total);
   document.getElementById('valeurPEA').textContent = formatEuro(pea.valeur);
   document.getElementById('valeurCTO').textContent = formatEuro(cto.valeur);
   document.getElementById('plusValuePEA').textContent = formatEuro(pea.plusValue, true);
-  document.getElementById('plusValuePEA').style.color = pea.plusValue >= 0 ? '#39b46e' : '#e53e3e';
+  document.getElementById('plusValuePEA').style.color = pea.plusValue >= 0 ? '#10b981' : '#e53e3e';
   document.getElementById('plusValueCTO').textContent = formatEuro(cto.plusValue, true);
   document.getElementById('plusValueCTO').style.color = cto.plusValue >= 0 ? '#7a6ff0' : '#e53e3e';
+
+  // Progression
   document.getElementById('progression').textContent = prog + '%';
   const bar = document.getElementById('progressBar');
   bar.style.width = Math.min(prog, 100) + '%';
   bar.textContent = prog + '%';
-  
+
+  // Graphiques et projections
   dessinerGraphique(pea.valeur, cto.valeur, livret, courant);
   afficherHistorique('pea');
   afficherHistorique('cto');
@@ -267,12 +337,13 @@ function calculer() {
   sauvegarder();
 }
 
+// ========== GRAPHIQUES ==========
 function dessinerGraphique(valPEA, valCTO, livret, courant) {
   const canvas = document.getElementById('pieChart');
   const ctx = canvas.getContext('2d');
   const total = valPEA + valCTO + livret + courant;
   const legend = document.getElementById('pieLegend');
-  
+
   if (total === 0) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = '#9ca3af';
@@ -282,20 +353,20 @@ function dessinerGraphique(valPEA, valCTO, livret, courant) {
     legend.innerHTML = '';
     return;
   }
-  
+
   const data = [
-    { label: '📊 PEA', value: valPEA, color: '#39b46e' },
+    { label: '📊 PEA', value: valPEA, color: '#10b981' },
     { label: '📈 CTO', value: valCTO, color: '#7a6ff0' },
-    { label: '💚 Livret A', value: livret, color: '#48bb78' },
+    { label: '💚 Livret A', value: livret, color: '#6d071a' },
     { label: '💳 Compte', value: courant, color: '#4299e1' }
   ].filter(x => x.value > 0);
-  
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const cx = canvas.width / 2;
   const cy = canvas.height / 2;
   const r = 110;
   let angle = -Math.PI / 2;
-  
+
   data.forEach(item => {
     const slice = (item.value / total) * 2 * Math.PI;
     ctx.beginPath();
@@ -304,7 +375,7 @@ function dessinerGraphique(valPEA, valCTO, livret, courant) {
     ctx.arc(cx, cy, r, angle, angle + slice);
     ctx.closePath();
     ctx.fill();
-    
+
     const mid = angle + slice / 2;
     const tx = cx + Math.cos(mid) * r * 0.65;
     const ty = cy + Math.sin(mid) * r * 0.65;
@@ -316,46 +387,58 @@ function dessinerGraphique(valPEA, valCTO, livret, courant) {
     ctx.fillText(pct + '%', tx, ty);
     angle += slice;
   });
-  
+
   let html = '';
   data.forEach(item => {
     const pct = ((item.value / total) * 100).toFixed(1);
-    html += `<div class="legend-item"><div class="legend-color" style="background:${item.color}"></div><span class="legend-label">${item.label}</span><span class="legend-value">${formatEuro(item.value)} (${pct}%)</span></div>`;
+    html += `<div class="legend-item"><div class="legend-color" style="background: ${item.color};"></div><span class="legend-label">${item.label}</span><span class="legend-value">${formatEuro(item.value)} (${pct}%)</span></div>`;
   });
   legend.innerHTML = html;
 }
 
+// ========== AFFICHAGE HISTORIQUES ==========
 function afficherHistorique(type) {
   const h = type === 'pea' ? historiquePEA : historiqueCTO;
   const tbody = document.getElementById('historique' + (type === 'pea' ? 'PEA' : 'CTO'));
-  
+
   if (h.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">Aucun investissement</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #9ca3af;">Aucun investissement enregistré</td></tr>';
     return;
   }
-  
+
   const rend = (Number(document.getElementById('rendement').value) || 7) / 100;
   const today = new Date();
   let cumul = 0;
   let versed = 0;
   let html = '';
-  
+
   h.forEach(item => {
     const depDate = new Date(item.date);
     let months = (today.getFullYear() - depDate.getFullYear()) * 12 + (today.getMonth() - depDate.getMonth());
     if (months < 0) months = 0;
+    
     const mRate = rend / 12;
     const val = item.montant * Math.pow(1 + mRate, months);
     cumul += val;
     versed += item.montant;
     const pv = cumul - versed;
     const dateStr = depDate.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
-    html += `<tr><td>${dateStr}</td><td><strong>${formatEuro(item.montant)}</strong></td><td>${formatEuro(item.world)}</td><td>${formatEuro(item.em)}</td><td class="positive"><strong>${formatEuro(cumul)}</strong></td><td class="positive">${formatEuro(pv, true)}</td><td><button class="btn-delete" onclick="supprimer('${type}', ${item.id})">🗑️</button></td></tr>`;
+    
+    html += `<tr>
+      <td>${dateStr}</td>
+      <td><strong>${formatEuro(item.montant)}</strong></td>
+      <td>${formatEuro(item.world)}</td>
+      <td>${formatEuro(item.em)}</td>
+      <td class="positive"><strong>${formatEuro(cumul)}</strong></td>
+      <td class="positive">${formatEuro(pv, true)}</td>
+      <td><button class="btn-delete" onclick="supprimer('${type}', ${item.id})">🗑️</button></td>
+    </tr>`;
   });
-  
+
   tbody.innerHTML = html;
 }
 
+// ========== PROJECTIONS ==========
 function afficherProjection(capital, rend) {
   const ages = [20, 25, 30, 35, 40, 45];
   const age = Number(document.getElementById('age').value) || 17;
@@ -363,120 +446,15 @@ function afficherProjection(capital, rend) {
   const invCTO = Number(document.getElementById('investissementCTO').value) || 0;
   const inv = invPEA + invCTO;
   const mRate = (rend / 100) / 12;
-  
+
   const grid = document.getElementById('projectionGrid');
   const tbody = document.getElementById('projectionBody');
   grid.innerHTML = '';
   tbody.innerHTML = '';
-  
+
   ages.forEach(a => {
     if (a <= age) return;
+    
     const yrs = a - age;
     const mths = yrs * 12;
     let final;
-    if (mRate === 0) {
-      final = capital + inv * mths;
-    } else {
-      final = capital * Math.pow(1 + mRate, mths) + inv * ((Math.pow(1 + mRate, mths) - 1) / mRate);
-    }
-    const versed = capital + inv * mths;
-    const pv = final - versed;
-    
-    grid.innerHTML += `<div class="projection-card"><div class="projection-age">${a} ans</div><div class="projection-amount">${formatEuro(final)}</div></div>`;
-    tbody.innerHTML += `<tr><td><strong>${a} ans</strong></td><td>${yrs} an${yrs>1?'s':''}</td><td>${formatEuro(versed)}</td><td class="positive"><strong>${formatEuro(final)}</strong></td><td class="positive">${formatEuro(pv, true)}</td></tr>`;
-  });
-}
-
-function calculerScenarios(capital, rendActuel) {
-  const age = Number(document.getElementById('age').value) || 17;
-  const invPEA = Number(document.getElementById('investissementPEA').value) || 0;
-  const invCTO = Number(document.getElementById('investissementCTO').value) || 0;
-  const inv = invPEA + invCTO;
-  const yrs = 45 - age;
-  
-  if (yrs <= 0) return;
-  
-  const scen = [
-    { id: 'Pessimiste', r: 5 },
-    { id: 'Neutre', r: 6.5 },
-    { id: 'Optimiste', r: 8 }
-  ];
-  
-  scen.forEach(s => {
-    const mth = yrs * 12;
-    const mRate = (s.r / 100) / 12;
-    let final;
-    if (mRate === 0) {
-      final = capital + inv * mth;
-    } else {
-      final = capital * Math.pow(1 + mRate, mth) + inv * ((Math.pow(1 + mRate, mth) - 1) / mRate);
-    }
-    const gains = final - capital - inv * mth;
-    document.getElementById('scenario' + s.id).textContent = formatEuro(final);
-    document.getElementById('detail' + s.id).textContent = '+' + formatEuro(gains) + ' de gains';
-  });
-}
-
-function ajouterMois(type) {
-  const dateId = type === 'pea' ? 'nouvelleDatePEA' : 'nouvelleDateCTO';
-  const montantId = type === 'pea' ? 'nouveauMontantPEA' : 'nouveauMontantCTO';
-  const worldId = type === 'pea' ? 'peaMsciWorld' : 'ctoMsciWorld';
-  const emId = type === 'pea' ? 'peaMsciEM' : 'ctoMsciEM';
-  
-  const date = document.getElementById(dateId).value;
-  const montant = Number(document.getElementById(montantId).value) || 0;
-  
-  if (!date || montant <= 0) {
-    alert('❌ Remplis la date et le montant !');
-    return;
-  }
-  
-  const worldPct = (Number(document.getElementById(worldId).value) || 85) / 100;
-  const emPct = (Number(document.getElementById(emId).value) || 15) / 100;
-  
-  const item = {
-    date: date,
-    montant: montant,
-    world: Math.round(montant * worldPct * 100) / 100,
-    em: Math.round(montant * emPct * 100) / 100,
-    id: Date.now()
-  };
-  
-  if (type === 'pea') {
-    historiquePEA.push(item);
-    historiquePEA.sort((a, b) => new Date(a.date) - new Date(b.date));
-    document.getElementById(dateId).value = '';
-  } else {
-    historiqueCTO.push(item);
-    historiqueCTO.sort((a, b) => new Date(a.date) - new Date(b.date));
-    document.getElementById(dateId).value = '';
-  }
-  
-  calculer();
-}
-
-function supprimer(type, id) {
-  if (!confirm('Supprimer cet investissement ?')) return;
-  if (type === 'pea') {
-    historiquePEA = historiquePEA.filter(x => x.id !== id);
-  } else {
-    historiqueCTO = historiqueCTO.filter(x => x.id !== id);
-  }
-  calculer();
-}
-
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById(tab).classList.add('active');
-}
-
-function formatEuro(val, signe = false) {
-  if (!val || isNaN(val)) return '0 €';
-  const fmt = Math.round(val).toLocaleString('fr-FR') + ' €';
-  return signe && val >= 0 ? '+ ' + fmt : fmt;
-}
-</script>
-</body>
-</html>

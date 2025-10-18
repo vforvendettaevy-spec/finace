@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Dashboard PEA + CTO - LUKA_INVEST_PRO</title>
+<title>Dashboard PEA - LUKA_INVEST_PRO</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>📊</text></svg>" />
 <style>
 *{box-sizing:border-box}
-body{font-family:"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(135deg,#0a0e14 0%,#1a1f2e 100%);margin:0;padding:22px;color:#e2e8f0}
-.container{max-width:1600px;margin:0 auto}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(135deg,#171715 0%,#1a1f2e 100%);margin:0;padding:22px;color:#e2e8f0}
+.container{max-width:1400px;margin:0 auto}
 .header{background:linear-gradient(135deg,#39b46e 0%,#2d8f57 100%);color:#fff;padding:36px;border-radius:18px;margin-bottom:26px;box-shadow:0 10px 40px rgba(57,180,110,0.18);text-align:center}
 .header h1{font-size:34px;margin-bottom:6px}
 .header p{opacity:.95;font-size:16px}
@@ -21,18 +21,17 @@ body{font-family:"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(1
 .param-item input{width:100%;padding:10px;border-radius:8px;border:1px solid #4a5568;font-size:15px;background:#1a202c;color:#e2e8f0}
 .btn-primary{background:linear-gradient(135deg,#39b46e 0%,#2d8f57 100%);color:#fff;border:none;padding:12px 28px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(57,180,110,.18);transition:transform .2s}
 .btn-primary:hover{transform:translateY(-3px)}
+.btn-primary:active{transform:translateY(0)}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:20px 0}
 .stat-card{background:#1e2433;padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.4);border:1px solid #2d3748}
-.stat-card.pea{border-left:4px solid #39b46e}
-.stat-card.cto{border-left:4px solid #7a6ff0}
-.stat-label{font-size:13px;color:#9ca3af;margin-bottom:8px;text-transform:uppercase}
-.stat-value{font-size:28px;font-weight:800;color:#e2e8f0}
+.stat-label{font-size:13px;color:#9ca3af;margin-bottom:8px}
+.stat-value{font-size:30px;font-weight:800;color:#e2e8f0}
 .progress-bar{background:#2d3748;height:32px;border-radius:18px;overflow:hidden;margin-top:12px}
 .progress-fill{height:100%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;background:linear-gradient(90deg,#39b46e,#2d8f57);transition:width .5s}
 .chart-section{background:#1e2433;border-radius:14px;padding:22px;margin-bottom:22px;box-shadow:0 6px 20px rgba(0,0,0,0.4);border:1px solid #2d3748}
-.section-title{font-size:18px;font-weight:800;color:#e2e8f0;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-title{font-size:18px;font-weight:800;color:#e2e8f0;margin-bottom:14px}
 .table-controls{display:grid;grid-template-columns:200px 160px 120px;gap:10px;margin-bottom:12px}
-.table-controls input{padding:10px;border-radius:8px;border:1px solid #4a5568;background:#2d3748;color:#e2e8f0;font-size:15px}
+.table-controls input[type="date"],.table-controls input[type="number"]{padding:10px;border-radius:8px;border:1px solid #4a5568;background:#2d3748;color:#e2e8f0;font-size:15px}
 .btn-add{background:linear-gradient(135deg,#7a6ff0,#6355cc);color:#fff;padding:10px;border-radius:8px;border:none;font-weight:700;cursor:pointer}
 .btn-delete{background:#e53e3e;color:#fff;border:none;padding:8px 10px;border-radius:6px;cursor:pointer}
 table{width:100%;border-collapse:collapse;margin-top:10px}
@@ -43,442 +42,102 @@ th{background:#2d3748;color:#cbd5e0;font-weight:700;font-size:13px}
 .projection-card{background:linear-gradient(135deg,#7a6ff0 0%,#6355cc 100%);color:#fff;padding:16px;border-radius:10px;text-align:center}
 .projection-age{font-size:20px;font-weight:800}
 .projection-amount{font-size:15px;opacity:.95}
-.pie-container{display:flex;justify-content:center;align-items:center;gap:40px;flex-wrap:wrap;margin-top:20px}
-.pie-legend{display:flex;flex-direction:column;gap:12px}
-.legend-item{display:flex;align-items:center;gap:10px;font-size:15px}
-.legend-color{width:24px;height:24px;border-radius:4px}
-.legend-label{color:#cbd5e0}
-.legend-value{color:#e2e8f0;font-weight:700;margin-left:auto}
-.scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
-.scenario-card{background:#2d3748;padding:20px;border-radius:12px;border:2px solid #374151}
-.scenario-card.optimiste{border-color:#39b46e}
-.scenario-card.neutre{border-color:#7a6ff0}
-.scenario-card.pessimiste{border-color:#e53e3e}
-.scenario-title{font-size:16px;font-weight:700;margin-bottom:12px;text-align:center}
-.scenario-card.optimiste .scenario-title{color:#39b46e}
-.scenario-card.neutre .scenario-title{color:#7a6ff0}
-.scenario-card.pessimiste .scenario-title{color:#e53e3e}
-.scenario-value{font-size:24px;font-weight:800;text-align:center;margin:8px 0}
-.scenario-detail{font-size:13px;color:#9ca3af;text-align:center}
-.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.tab{padding:10px 20px;background:#2d3748;border:none;border-radius:8px;color:#cbd5e0;font-weight:600;cursor:pointer;transition:all .2s}
-.tab.active{background:linear-gradient(135deg,#39b46e,#2d8f57);color:#fff}
-.tab:hover{transform:translateY(-2px)}
-.tab-content{display:none}
-.tab-content.active{display:block}
-@media (max-width:900px){.scenario-grid{grid-template-columns:1fr}.table-controls{grid-template-columns:1fr 1fr}.pie-container{flex-direction:column}}
+.chart-pie-container{display:flex;justify-content:center;align-items:center;padding:20px}
+@media (max-width:720px){.table-controls{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="header">
-    <h1>🎯 Dashboard PEA + CTO</h1>
-    <p>Objectif : 1 000 000 € à 45 ans · LUKA_INVEST_PRO</p>
-  </div>
-
-  <div class="params-section">
-    <div class="params-title">⚙️ Mes paramètres</div>
-    <div class="params-grid">
-      <div class="param-item"><label>💰 Revenu mensuel (€)</label><input id="revenu" type="number" value="1200" min="0" /></div>
-      <div class="param-item"><label>📈 Investissement PEA (€/mois)</label><input id="investissementPEA" type="number" value="900" min="0" /></div>
-      <div class="param-item"><label>📈 Investissement CTO (€/mois)</label><input id="investissementCTO" type="number" value="0" min="0" /></div>
-      <div class="param-item"><label>🌍 PEA - MSCI World (%)</label><input id="peaMsciWorld" type="number" value="85" min="0" max="100" /></div>
-      <div class="param-item"><label>🌏 PEA - Émergents (%)</label><input id="peaMsciEM" type="number" value="15" min="0" max="100" /></div>
-      <div class="param-item"><label>🌍 CTO - MSCI World (%)</label><input id="ctoMsciWorld" type="number" value="90" min="0" max="100" /></div>
-      <div class="param-item"><label>🌏 CTO - Émergents (%)</label><input id="ctoMsciEM" type="number" value="10" min="0" max="100" /></div>
-      <div class="param-item"><label>📊 Rendement annuel (%)</label><input id="rendement" type="number" value="7" step="0.1" min="0" /></div>
-      <div class="param-item"><label>🎂 Mon âge actuel</label><input id="age" type="number" value="17" min="0" /></div>
-      <div class="param-item"><label>💚 Livret A (€)</label><input id="livretA" type="number" value="3000" min="0" /></div>
-      <div class="param-item"><label>💳 Compte courant (€)</label><input id="compteCourant" type="number" value="0" min="0" /></div>
-    </div>
-    <div style="text-align:center;margin-top:16px"><button class="btn-primary" id="btnCalculer">🚀 Calculer ma projection</button></div>
-  </div>
-
-  <div class="stats-grid">
-    <div class="stat-card"><div class="stat-label">💰 Capital total</div><div class="stat-value" id="capitalTotal">0 €</div></div>
-    <div class="stat-card pea"><div class="stat-label">📈 PEA - Valeur</div><div class="stat-value" id="valeurPEA">0 €</div></div>
-    <div class="stat-card pea"><div class="stat-label">💹 PEA - Plus-value</div><div id="plusValuePEA" style="font-size:24px;font-weight:800;color:#39b46e">+0 €</div></div>
-    <div class="stat-card cto"><div class="stat-label">📈 CTO - Valeur</div><div class="stat-value" id="valeurCTO">0 €</div></div>
-    <div class="stat-card cto"><div class="stat-label">💹 CTO - Plus-value</div><div id="plusValueCTO" style="font-size:24px;font-weight:800;color:#7a6ff0">+0 €</div></div>
-    <div class="stat-card"><div class="stat-label">🎯 Progression vers 1M€</div><div class="stat-value" id="progression">0%</div><div class="progress-bar"><div id="progressBar" class="progress-fill" style="width:0%">0%</div></div></div>
-  </div>
-
-  <div class="chart-section">
-    <div class="section-title">📊 Répartition de mon patrimoine</div>
-    <div class="pie-container">
-      <canvas id="pieChart" width="280" height="280"></canvas>
-      <div class="pie-legend" id="pieLegend"></div>
-    </div>
-  </div>
-
-  <div class="tabs">
-    <button class="tab active" onclick="switchTab('pea')">📈 PEA</button>
-    <button class="tab" onclick="switchTab('cto')">📊 CTO</button>
-  </div>
-
-  <div id="pea" class="tab-content active">
-    <div class="chart-section">
-      <div class="section-title">📅 Historique PEA</div>
-      <div class="table-controls">
-        <input id="nouvelleDatePEA" type="date" />
-        <input id="nouveauMontantPEA" type="number" placeholder="Montant (€)" value="900" />
-        <button class="btn-add" onclick="ajouterMois('pea')">➕ Ajouter</button>
-      </div>
-      <table>
-        <thead><tr><th>📅 Date</th><th>💰 Versement</th><th>🌍 World</th><th>🌏 EM</th><th>📈 Valeur</th><th>💹 Plus-value</th><th>🗑️</th></tr></thead>
-        <tbody id="historiquePEA"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <div id="cto" class="tab-content">
-    <div class="chart-section">
-      <div class="section-title">📅 Historique CTO</div>
-      <div class="table-controls">
-        <input id="nouvelleDateCTO" type="date" />
-        <input id="nouveauMontantCTO" type="number" placeholder="Montant (€)" value="0" />
-        <button class="btn-add" onclick="ajouterMois('cto')">➕ Ajouter</button>
-      </div>
-      <table>
-        <thead><tr><th>📅 Date</th><th>💰 Versement</th><th>🌍 World</th><th>🌏 EM</th><th>📈 Valeur</th><th>💹 Plus-value</th><th>🗑️</th></tr></thead>
-        <tbody id="historiqueCTO"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="chart-section">
-    <div class="section-title">🔮 Projection jusqu'à 45 ans (Neutre 6.5%)</div>
-    <div id="projectionGrid" class="projection-grid"></div>
-  </div>
-
-  <div class="chart-section">
-    <div class="section-title">📊 Projection détaillée par âge</div>
-    <table><thead><tr><th>🎂 Âge</th><th>⏱️ Années</th><th>💰 Total versé</th><th>📈 Capital estimé</th><th>💹 Plus-value</th></tr></thead><tbody id="projectionBody"></tbody></table>
-  </div>
-
-  <div class="chart-section">
-    <div class="section-title">🎲 Scénarios de projection à 45 ans</div>
-    <div class="scenario-grid">
-      <div class="scenario-card pessimiste">
-        <div class="scenario-title">😰 Pessimiste (5%)</div>
-        <div class="scenario-value" id="scenarioPessimiste">0 €</div>
-        <div class="scenario-detail" id="detailPessimiste">Capital estimé</div>
-      </div>
-      <div class="scenario-card neutre">
-        <div class="scenario-title">😐 Neutre (6.5%)</div>
-        <div class="scenario-value" id="scenarioNeutre">0 €</div>
-        <div class="scenario-detail" id="detailNeutre">Capital estimé</div>
-      </div>
-      <div class="scenario-card optimiste">
-        <div class="scenario-title">😎 Optimiste (8%)</div>
-        <div class="scenario-value" id="scenarioOptimiste">0 €</div>
-        <div class="scenario-detail" id="detailOptimiste">Capital estimé</div>
-      </div>
-    </div>
-  </div>
+<div class="header">
+<h1>🎯 Mon Dashboard PEA</h1>
+<p>Objectif : 1 000 000 € à 45 ans · LUKA_INVEST_PRO</p>
 </div>
-
+<div class="params-section">
+<div class="params-title">⚙️ Mes paramètres</div>
+<div class="params-grid">
+<div class="param-item"><label>💰 Revenu mensuel (€)</label><input id="revenu" type="number" value="1200" min="0" /></div>
+<div class="param-item"><label>📈 Investissement mensuel (€)</label><input id="investissement" type="number" value="900" min="0" /></div>
+<div class="param-item"><label>🌍 MSCI World (%)</label><input id="msciWorld" type="number" value="85" min="0" max="100" /></div>
+<div class="param-item"><label>🌏 Marchés émergents (%)</label><input id="msciEM" type="number" value="15" min="0" max="100" /></div>
+<div class="param-item"><label>📊 Rendement annuel (%)</label><input id="rendement" type="number" value="7" step="0.1" min="0" /></div>
+<div class="param-item"><label>💸 Frais de courtage (%)</label><input id="fraisCourtage" type="number" value="0.2" step="0.1" min="0" /></div>
+<div class="param-item"><label>🎂 Mon âge actuel</label><input id="age" type="number" value="17" min="0" /></div>
+<div class="param-item"><label>💚 Livret A (€)</label><input id="livretA" type="number" value="3000" min="0" /></div>
+<div class="param-item"><label>💳 Compte courant (€)</label><input id="compteCourant" type="number" value="0" min="0" /></div>
+</div>
+<div style="text-align:center;margin-top:16px"><button class="btn-primary" id="btnCalculer">🚀 Calculer ma projection</button></div>
+</div>
+<div class="stats-grid">
+<div class="stat-card"><div class="stat-label">💰 Capital total estimé</div><div class="stat-value" id="capitalTotal">0 €</div></div>
+<div class="stat-card"><div class="stat-label">📈 Valeur PEA</div><div class="stat-value" id="valeurPEA">0 €</div></div>
+<div class="stat-card"><div class="stat-label">📈 Plus-value PEA</div><div id="plusValue" style="font-size:28px;font-weight:800;color:#39b46e">+ 0 €</div></div>
+<div class="stat-card"><div class="stat-label">📊 Rendement réel</div><div class="stat-value" id="rendementReel" style="font-size:28px;color:#7a6ff0">0%</div></div>
+<div class="stat-card"><div class="stat-label">🎯 Progression vers 1M€</div><div class="stat-value" id="progression">0%</div><div class="progress-bar"><div id="progressBar" class="progress-fill" style="width:0%">0%</div></div></div>
+</div>
+<div class="chart-section">
+<div class="section-title">📈 Évolution de mon capital</div>
+<canvas id="chartEvolution" style="max-height:300px"></canvas>
+</div>
+<div class="chart-section">
+<div class="section-title">🥧 Répartition de mes ETF</div>
+<div class="chart-pie-container">
+<canvas id="chartRepartition" style="max-width:400px;max-height:400px"></canvas>
+</div>
+</div>
+<div class="chart-section">
+<div class="section-title">📅 Historique d'investissement</div>
+<div class="table-controls">
+<input id="nouveauMois" type="date" />
+<input id="nouveauMontant" type="number" placeholder="Montant (€)" value="900" />
+<button class="btn-add" onclick="ajouterMois()">➕ Ajouter</button>
+</div>
+<table>
+<thead><tr><th>📅 Date</th><th>💰 Versement</th><th>🌍 MSCI World</th><th>🌏 Émergents</th><th>📈 Valeur cumulée</th><th>💹 Plus-value</th><th>🗑️</th></tr></thead>
+<tbody id="historique"></tbody>
+</table>
+</div>
+<div class="chart-section">
+<div class="section-title">🎯 Calculateur d'objectif</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:16px">
+<div><label style="color:#cbd5e0;font-weight:600;display:block;margin-bottom:8px">💰 Objectif (€)</label><input id="objectifMontant" type="number" value="1000000" min="0" style="width:100%;padding:10px;border-radius:8px;border:1px solid #4a5568;background:#2d3748;color:#e2e8f0;font-size:15px" /></div>
+<div><label style="color:#cbd5e0;font-weight:600;display:block;margin-bottom:8px">🎂 Âge cible</label><input id="objectifAge" type="number" value="45" min="0" style="width:100%;padding:10px;border-radius:8px;border:1px solid #4a5568;background:#2d3748;color:#e2e8f0;font-size:15px" /></div>
+<div style="display:flex;align-items:flex-end"><button class="btn-primary" onclick="calculerObjectif()" style="width:100%">🧮 Calculer</button></div>
+</div>
+<div id="resultatObjectif" style="background:#2d3748;padding:20px;border-radius:10px;display:none">
+<p style="font-size:18px;color:#e2e8f0;margin:0"><strong>💡 Pour atteindre <span id="objMontant"></span> à <span id="objAge"></span> ans :</strong></p>
+<p style="font-size:24px;color:#39b46e;font-weight:800;margin:10px 0 0 0">Tu dois investir <span id="objInvestissement"></span> par mois</p>
+</div>
+</div>
+<div class="chart-section">
+<div class="section-title">🔮 Ma projection jusqu'à 45 ans</div>
+<div id="projectionGrid" class="projection-grid"></div>
+</div>
+<div class="chart-section">
+<div class="section-title">📊 Projection détaillée par âge</div>
+<table id="tableProjection">
+<thead><tr><th>🎂 Âge</th><th>⏱️ Années</th><th>💰 Total versé (est.)</th><th>📈 Capital estimé</th><th>💹 Plus-value</th></tr></thead>
+<tbody id="projectionBody"></tbody>
+</table>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 <script>
-let historiquePEA = [];
-let historiqueCTO = [];
-
-window.onload = function() {
-  try {
-    const saved = localStorage.getItem('dashboardPEA_CTO');
-    if (saved) {
-      const data = JSON.parse(saved);
-      Object.keys(data).forEach(key => {
-        const el = document.getElementById(key);
-        if (el && el.type === 'number') el.value = data[key];
-      });
-      historiquePEA = data.historiquePEA || [];
-      historiqueCTO = data.historiqueCTO || [];
-    }
-  } catch(e) {
-    console.log('Pas de sauvegarde');
-  }
-  document.getElementById('btnCalculer').addEventListener('click', calculer);
-  calculer();
-};
-
-function sauvegarder() {
-  const data = {
-    revenu: document.getElementById('revenu').value,
-    investissementPEA: document.getElementById('investissementPEA').value,
-    investissementCTO: document.getElementById('investissementCTO').value,
-    peaMsciWorld: document.getElementById('peaMsciWorld').value,
-    peaMsciEM: document.getElementById('peaMsciEM').value,
-    ctoMsciWorld: document.getElementById('ctoMsciWorld').value,
-    ctoMsciEM: document.getElementById('ctoMsciEM').value,
-    rendement: document.getElementById('rendement').value,
-    age: document.getElementById('age').value,
-    livretA: document.getElementById('livretA').value,
-    compteCourant: document.getElementById('compteCourant').value,
-    historiquePEA: historiquePEA,
-    historiqueCTO: historiqueCTO
-  };
-  localStorage.setItem('dashboardPEA_CTO', JSON.stringify(data));
-}
-
-function calculerValeur(historique, rendementAnn) {
-  const today = new Date();
-  const rendement = rendementAnn / 100;
-  let valeur = 0;
-  let totalVerse = 0;
-  historique.forEach(item => {
-    const depDate = new Date(item.date);
-    let months = (today.getFullYear() - depDate.getFullYear()) * 12 + (today.getMonth() - depDate.getMonth());
-    if (months < 0) months = 0;
-    const monthlyRate = rendement / 12;
-    const value = item.montant * Math.pow(1 + monthlyRate, months);
-    valeur += value;
-    totalVerse += item.montant;
-  });
-  return { valeur, totalVerse, plusValue: valeur - totalVerse };
-}
-
-function calculer() {
-  const rend = Number(document.getElementById('rendement').value) || 7;
-  const livret = Number(document.getElementById('livretA').value) || 0;
-  const courant = Number(document.getElementById('compteCourant').value) || 0;
-  
-  const pea = calculerValeur(historiquePEA, rend);
-  const cto = calculerValeur(historiqueCTO, rend);
-  const total = livret + courant + pea.valeur + cto.valeur;
-  const prog = (total / 1000000 * 100).toFixed(2);
-  
-  document.getElementById('capitalTotal').textContent = formatEuro(total);
-  document.getElementById('valeurPEA').textContent = formatEuro(pea.valeur);
-  document.getElementById('valeurCTO').textContent = formatEuro(cto.valeur);
-  document.getElementById('plusValuePEA').textContent = formatEuro(pea.plusValue, true);
-  document.getElementById('plusValuePEA').style.color = pea.plusValue >= 0 ? '#39b46e' : '#e53e3e';
-  document.getElementById('plusValueCTO').textContent = formatEuro(cto.plusValue, true);
-  document.getElementById('plusValueCTO').style.color = cto.plusValue >= 0 ? '#7a6ff0' : '#e53e3e';
-  document.getElementById('progression').textContent = prog + '%';
-  const bar = document.getElementById('progressBar');
-  bar.style.width = Math.min(prog, 100) + '%';
-  bar.textContent = prog + '%';
-  
-  dessinerGraphique(pea.valeur, cto.valeur, livret, courant);
-  afficherHistorique('pea');
-  afficherHistorique('cto');
-  afficherProjection(total, rend);
-  calculerScenarios(total, rend);
-  sauvegarder();
-}
-
-function dessinerGraphique(valPEA, valCTO, livret, courant) {
-  const canvas = document.getElementById('pieChart');
-  const ctx = canvas.getContext('2d');
-  const total = valPEA + valCTO + livret + courant;
-  const legend = document.getElementById('pieLegend');
-  
-  if (total === 0) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#9ca3af';
-    ctx.font = '16px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Commence à investir !', canvas.width / 2, canvas.height / 2);
-    legend.innerHTML = '';
-    return;
-  }
-  
-  const data = [
-    { label: '📊 PEA', value: valPEA, color: '#780a15' },
-    { label: '📈 CTO', value: valCTO, color: '#7a6ff0' },
-    { label: '💚 Livret A', value: livret, color: '#01731f' },
-    { label: '💳 Compte', value: courant, color: '#4299e1' }
-  ].filter(x => x.value > 0);
-  
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const cx = canvas.width / 2;
-  const cy = canvas.height / 2;
-  const r = 110;
-  let angle = -Math.PI / 2;
-  
-  data.forEach(item => {
-    const slice = (item.value / total) * 2 * Math.PI;
-    ctx.beginPath();
-    ctx.fillStyle = item.color;
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, angle, angle + slice);
-    ctx.closePath();
-    ctx.fill();
-    
-    const mid = angle + slice / 2;
-    const tx = cx + Math.cos(mid) * r * 0.65;
-    const ty = cy + Math.sin(mid) * r * 0.65;
-    const pct = ((item.value / total) * 100).toFixed(1);
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(pct + '%', tx, ty);
-    angle += slice;
-  });
-  
-  let html = '';
-  data.forEach(item => {
-    const pct = ((item.value / total) * 100).toFixed(1);
-    html += `<div class="legend-item"><div class="legend-color" style="background:${item.color}"></div><span class="legend-label">${item.label}</span><span class="legend-value">${formatEuro(item.value)} (${pct}%)</span></div>`;
-  });
-  legend.innerHTML = html;
-}
-
-function afficherHistorique(type) {
-  const h = type === 'pea' ? historiquePEA : historiqueCTO;
-  const tbody = document.getElementById('historique' + (type === 'pea' ? 'PEA' : 'CTO'));
-  
-  if (h.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">Aucun investissement</td></tr>';
-    return;
-  }
-  
-  const rend = (Number(document.getElementById('rendement').value) || 7) / 100;
-  const today = new Date();
-  let cumul = 0;
-  let versed = 0;
-  let html = '';
-  
-  h.forEach(item => {
-    const depDate = new Date(item.date);
-    let months = (today.getFullYear() - depDate.getFullYear()) * 12 + (today.getMonth() - depDate.getMonth());
-    if (months < 0) months = 0;
-    const mRate = rend / 12;
-    const val = item.montant * Math.pow(1 + mRate, months);
-    cumul += val;
-    versed += item.montant;
-    const pv = cumul - versed;
-    const dateStr = depDate.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
-    html += `<tr><td>${dateStr}</td><td><strong>${formatEuro(item.montant)}</strong></td><td>${formatEuro(item.world)}</td><td>${formatEuro(item.em)}</td><td class="positive"><strong>${formatEuro(cumul)}</strong></td><td class="positive">${formatEuro(pv, true)}</td><td><button class="btn-delete" onclick="supprimer('${type}', ${item.id})">🗑️</button></td></tr>`;
-  });
-  
-  tbody.innerHTML = html;
-}
-
-function afficherProjection(capital, rend) {
-  const ages = [20, 25, 30, 35, 40, 45];
-  const age = Number(document.getElementById('age').value) || 17;
-  const invPEA = Number(document.getElementById('investissementPEA').value) || 0;
-  const invCTO = Number(document.getElementById('investissementCTO').value) || 0;
-  const inv = invPEA + invCTO;
-  const mRate = (rend / 100) / 12;
-  
-  const grid = document.getElementById('projectionGrid');
-  const tbody = document.getElementById('projectionBody');
-  grid.innerHTML = '';
-  tbody.innerHTML = '';
-  
-  ages.forEach(a => {
-    if (a <= age) return;
-    const yrs = a - age;
-    const mths = yrs * 12;
-    let final;
-    if (mRate === 0) {
-      final = capital + inv * mths;
-    } else {
-      final = capital * Math.pow(1 + mRate, mths) + inv * ((Math.pow(1 + mRate, mths) - 1) / mRate);
-    }
-    const versed = capital + inv * mths;
-    const pv = final - versed;
-    
-    grid.innerHTML += `<div class="projection-card"><div class="projection-age">${a} ans</div><div class="projection-amount">${formatEuro(final)}</div></div>`;
-    tbody.innerHTML += `<tr><td><strong>${a} ans</strong></td><td>${yrs} an${yrs>1?'s':''}</td><td>${formatEuro(versed)}</td><td class="positive"><strong>${formatEuro(final)}</strong></td><td class="positive">${formatEuro(pv, true)}</td></tr>`;
-  });
-}
-
-function calculerScenarios(capital, rendActuel) {
-  const age = Number(document.getElementById('age').value) || 17;
-  const invPEA = Number(document.getElementById('investissementPEA').value) || 0;
-  const invCTO = Number(document.getElementById('investissementCTO').value) || 0;
-  const inv = invPEA + invCTO;
-  const yrs = 45 - age;
-  
-  if (yrs <= 0) return;
-  
-  const scen = [
-    { id: 'Pessimiste', r: 5 },
-    { id: 'Neutre', r: 6.5 },
-    { id: 'Optimiste', r: 8 }
-  ];
-  
-  scen.forEach(s => {
-    const mth = yrs * 12;
-    const mRate = (s.r / 100) / 12;
-    let final;
-    if (mRate === 0) {
-      final = capital + inv * mth;
-    } else {
-      final = capital * Math.pow(1 + mRate, mth) + inv * ((Math.pow(1 + mRate, mth) - 1) / mRate);
-    }
-    const gains = final - capital - inv * mth;
-    document.getElementById('scenario' + s.id).textContent = formatEuro(final);
-    document.getElementById('detail' + s.id).textContent = '+' + formatEuro(gains) + ' de gains';
-  });
-}
-
-function ajouterMois(type) {
-  const dateId = type === 'pea' ? 'nouvelleDatePEA' : 'nouvelleDateCTO';
-  const montantId = type === 'pea' ? 'nouveauMontantPEA' : 'nouveauMontantCTO';
-  const worldId = type === 'pea' ? 'peaMsciWorld' : 'ctoMsciWorld';
-  const emId = type === 'pea' ? 'peaMsciEM' : 'ctoMsciEM';
-  
-  const date = document.getElementById(dateId).value;
-  const montant = Number(document.getElementById(montantId).value) || 0;
-  
-  if (!date || montant <= 0) {
-    alert('❌ Remplis la date et le montant !');
-    return;
-  }
-  
-  const worldPct = (Number(document.getElementById(worldId).value) || 85) / 100;
-  const emPct = (Number(document.getElementById(emId).value) || 15) / 100;
-  
-  const item = {
-    date: date,
-    montant: montant,
-    world: Math.round(montant * worldPct * 100) / 100,
-    em: Math.round(montant * emPct * 100) / 100,
-    id: Date.now()
-  };
-  
-  if (type === 'pea') {
-    historiquePEA.push(item);
-    historiquePEA.sort((a, b) => new Date(a.date) - new Date(b.date));
-    document.getElementById(dateId).value = '';
-  } else {
-    historiqueCTO.push(item);
-    historiqueCTO.sort((a, b) => new Date(a.date) - new Date(b.date));
-    document.getElementById(dateId).value = '';
-  }
-  
-  calculer();
-}
-
-function supprimer(type, id) {
-  if (!confirm('Supprimer cet investissement ?')) return;
-  if (type === 'pea') {
-    historiquePEA = historiquePEA.filter(x => x.id !== id);
-  } else {
-    historiqueCTO = historiqueCTO.filter(x => x.id !== id);
-  }
-  calculer();
-}
-
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById(tab).classList.add('active');
-}
-
-function formatEuro(val, signe = false) {
-  if (!val || isNaN(val)) return '0 €';
-  const fmt = Math.round(val).toLocaleString('fr-FR') + ' €';
-  return signe && val >= 0 ? '+ ' + fmt : fmt;
-}
+let historiqueMois=[];let chartInstance=null;let chartPieInstance=null;
+window.onload=function(){try{const saved=localStorage.getItem('dashboardData');if(saved){const data=JSON.parse(saved);document.getElementById('revenu').value=data.revenu??1200;document.getElementById('investissement').value=data.investissement??900;document.getElementById('msciWorld').value=data.msciWorld??85;document.getElementById('msciEM').value=data.msciEM??15;document.getElementById('rendement').value=data.rendement??7;document.getElementById('fraisCourtage').value=data.fraisCourtage??0.2;document.getElementById('age').value=data.age??17;document.getElementById('livretA').value=data.livretA??3000;document.getElementById('compteCourant').value=data.compteCourant??0;historiqueMois=(data.historique||[]).map(item=>{let dateObj;if(item.date){dateObj=new Date(item.date)}else if(item.mois){dateObj=new Date((item.mois||'')+'-01')}else{dateObj=new Date()}return{mois:item.mois,date:dateObj,montant:Number(item.montant)||0,world:Number(item.world)||0,em:Number(item.em)||0,id:Number(item.id)||Date.now()+Math.floor(Math.random()*1000)}});historiqueMois.sort((a,b)=>a.date-b.date)}}catch(e){console.warn('Erreur lecture storage',e);historiqueMois=[]}document.getElementById('btnCalculer').addEventListener('click',calculer);calculer()};
+function sauvegarder(){try{const data={revenu:Number(document.getElementById('revenu').value)||0,investissement:Number(document.getElementById('investissement').value)||0,msciWorld:Number(document.getElementById('msciWorld').value)||85,msciEM:Number(document.getElementById('msciEM').value)||15,rendement:Number(document.getElementById('rendement').value)||7,fraisCourtage:Number(document.getElementById('fraisCourtage').value)||0.2,age:Number(document.getElementById('age').value)||17,livretA:Number(document.getElementById('livretA').value)||0,compteCourant:Number(document.getElementById('compteCourant').value)||0,historique:historiqueMois.map(h=>({mois:h.mois,date:h.date instanceof Date?h.date.toISOString():h.date,montant:h.montant,world:h.world,em:h.em,id:h.id}))};localStorage.setItem('dashboardData',JSON.stringify(data))}catch(e){console.warn('Erreur sauvegarde',e)}}
+function calculer(){const livretA=Number(document.getElementById('livretA').value)||0;const compteCourant=Number(document.getElementById('compteCourant').value)||0;const rendementAnn=Number(document.getElementById('rendement').value)||7;const fraisCourtage=Number(document.getElementById('fraisCourtage').value)||0.2;const rendement=(rendementAnn-fraisCourtage)/100;const age=Number(document.getElementById('age').value)||17;const investissement=Number(document.getElementById('investissement').value)||0;const today=new Date();let valeurPEA=0;let totalVerse=0;let totalFrais=0;historiqueMois.sort((a,b)=>a.date-b.date);historiqueMois.forEach(item=>{const depDate=item.date instanceof Date?item.date:new Date(item.date);let monthsElapsed=(today.getFullYear()-depDate.getFullYear())*12+(today.getMonth()-depDate.getMonth());if(monthsElapsed<0)monthsElapsed=0;const monthlyRate=rendement/12;const fraisMontant=item.montant*(fraisCourtage/100);const montantNet=item.montant-fraisMontant;const value=montantNet*Math.pow(1+monthlyRate,monthsElapsed);valeurPEA+=value;totalVerse+=item.montant;totalFrais+=fraisMontant});const plusValue=valeurPEA-(totalVerse-totalFrais);const capitalTotal=livretA+compteCourant+valeurPEA;let rendementReel=0;if(totalVerse>0&&historiqueMois.length>0){const firstDate=historiqueMois[0].date;const monthsTotal=(today.getFullYear()-firstDate.getFullYear())*12+(today.getMonth()-firstDate.getMonth());if(monthsTotal>0){const yearsTotal=monthsTotal/12;rendementReel=(Math.pow(valeurPEA/(totalVerse-totalFrais),1/yearsTotal)-1)*100}}const progressionPct=(capitalTotal/1000000*100);const progressionPctText=progressionPct.toFixed(2);document.getElementById('capitalTotal').textContent=formatEuro(capitalTotal);document.getElementById('valeurPEA').textContent=formatEuro(valeurPEA);const plusValueElement=document.getElementById('plusValue');const plusValueText=(plusValue>=0?'+ ':'- ')+formatEuro(Math.abs(plusValue));plusValueElement.textContent=plusValueText;plusValueElement.style.color=plusValue>=0?'#39b46e':'#e53e3e';document.getElementById('rendementReel').textContent=rendementReel.toFixed(2)+'% / an';document.getElementById('progression').textContent=progressionPctText+'%';const width=Math.min(Math.max(progressionPct,0),100);const bar=document.getElementById('progressBar');bar.style.width=width+'%';bar.textContent=progressionPctText+'%';afficherHistorique();afficherProjection(capitalTotal,investissement,rendement,age);creerGraphique();creerCamembert();sauvegarder()}
+function ajouterMois(){const dateInput=document.getElementById('nouveauMois').value;const montant=Number(document.getElementById('nouveauMontant').value)||0;if(!dateInput||montant<=0){alert('❌ Remplis correctement la date et le montant.');return}const msciWorldPct=(Number(document.getElementById('msciWorld').value)||85)/100;const msciEMPct=(Number(document.getElementById('msciEM').value)||15)/100;const dateObj=new Date(dateInput);const moisFormat=dateInput.substring(0,7);const obj={mois:moisFormat,montant:montant,world:Math.round(montant*msciWorldPct*100)/100,em:Math.round(montant*msciEMPct*100)/100,date:dateObj,id:Date.now()+Math.floor(Math.random()*1000)};historiqueMois.push(obj);historiqueMois.sort((a,b)=>a.date-b.date);document.getElementById('nouveauMois').value='';document.getElementById('nouveauMontant').value=montant;calculer()}
+function supprimerMois(id){if(!confirm('Supprimer cet enregistrement ?'))return;historiqueMois=historiqueMois.filter(m=>Number(m.id)!==Number(id));calculer()}
+function afficherHistorique(){const tbody=document.getElementById('historique');if(historiqueMois.length===0){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:#718096">Aucun investissement enregistré. Ajoute ton premier mois !</td></tr>';return}const rendement=Number(document.getElementById('rendement').value)/100||0.07;const today=new Date();let valeurCumulee=0;let totalVerse=0;let html='';historiqueMois.forEach((item,index)=>{const depDate=item.date instanceof Date?item.date:new Date(item.date);let monthsElapsed=(today.getFullYear()-depDate.getFullYear())*12+(today.getMonth()-depDate.getMonth());if(monthsElapsed<0)monthsElapsed=0;const monthlyRate=rendement/12;const valueThis=item.montant*Math.pow(1+monthlyRate,monthsElapsed);valeurCumulee+=valueThis;totalVerse+=item.montant;const plusValue=valeurCumulee-totalVerse;const dateFormatee=depDate.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});html+=`<tr><td>${dateFormatee}</td><td><strong>${formatEuro(item.montant)}</strong></td><td>${formatEuro(item.world)}</td><td>${formatEuro(item.em)}</td><td class="positive"><strong>${formatEuro(valeurCumulee)}</strong></td><td class="positive">${(plusValue>=0?'+':'')}${formatEuro(plusValue)}</td><td><button class="btn-delete" data-id="${item.id}" title="Supprimer">🗑️</button></td></tr>`});tbody.innerHTML=html}
+document.addEventListener('click',function(e){const t=e.target;if(t&&t.classList&&t.classList.contains('btn-delete')){const id=t.getAttribute('data-id');if(id)supprimerMois(id)}});
+function afficherProjection(capitalActuel,investissement,rendementAnn,ageActuel){const ages=[20,25,30,35,40,45];const grid=document.getElementById('projectionGrid');const tbody=document.getElementById('projectionBody');grid.innerHTML='';tbody.innerHTML='';const monthlyRate=rendementAnn/12;ages.forEach(age=>{if(age<=ageActuel)return;const years=age-ageActuel;const months=years*12;let capitalFinal;if(monthlyRate===0){capitalFinal=capitalActuel+investissement*months}else{capitalFinal=capitalActuel*Math.pow(1+monthlyRate,months)+investissement*((Math.pow(1+monthlyRate,months)-1)/monthlyRate)}const totalVerse=capitalActuel+investissement*months;const plusValue=capitalFinal-totalVerse;const card=document.createElement('div');card.className='projection-card';card.innerHTML=`<div class="projection-age">${age} ans</div><div class="projection-amount">${formatEuro(capitalFinal)}</div>`;grid.appendChild(card);const tr=document.createElement('tr');tr.innerHTML=`<td><strong>${age} ans</strong></td><td>${years} an${years>1?'s':''}</td><td>${formatEuro(totalVerse)}</td><td class="positive"><strong>${formatEuro(capitalFinal)}</strong></td><td class="positive">${(plusValue>=0?'+':'')}${formatEuro(plusValue)}</td>`;tbody.appendChild(tr)})}
+function formatEuro(valeur){if(valeur===null||valeur===undefined||isNaN(Number(valeur)))return '0 €';return Math.round(Number(valeur)).toLocaleString('fr-FR')+' €'}
+function creerGraphique(){if(historiqueMois.length===0)return;const rendementAnn=Number(document.getElementById('rendement').value)||7;const fraisCourtage=Number(document.getElementById('fraisCourtage').value)||0.2;const rendement=(rendementAnn-fraisCourtage)/100;const today=new Date();historiqueMois.sort((a,b)=>a.date-b.date);const labels=[];const data=[];let cumulValeur=0;historiqueMois.forEach(item=>{const depDate=item.date instanceof Date?item.date:new Date(item.date);let monthsElapsed=(today.getFullYear()-depDate.getFullYear())*12+(today.getMonth()-depDate.getMonth());if(monthsElapsed<0)monthsElapsed=0;const monthlyRate=rendement/12;const fraisMontant=item.montant*(fraisCourtage/100);const montantNet=item.montant-fraisMontant;const value=montantNet*Math.pow(1+monthlyRate,monthsElapsed);cumulValeur+=value;labels.push(depDate.toLocaleDateString('fr-FR',{month:'short',year:'2-digit'}));data.push(Math.round(cumulValeur))});const ctx=document.getElementById('chartEvolution');if(!ctx)return;if(chartInstance){chartInstance.destroy()}chartInstance=new Chart(ctx,{type:'line',data:{labels:labels,datasets:[{label:'Valeur du portefeuille',data:data,borderColor:'#39b46e',backgroundColor:'rgba(57, 180, 110, 0.1)',borderWidth:3,fill:true,tension:0.4}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{color:'#e2e8f0',font:{size:14}}}},scales:{y:{beginAtZero:true,ticks:{color:'#9ca3af',callback:function(value){return value.toLocaleString('fr-FR')+' €'}},grid:{color:'#374151'}},x:{ticks:{color:'#9ca3af'},grid:{color:'#374151'}}}}})}
+function creerCamembert(){const msciWorld=Number(document.getElementById('msciWorld').value)||85;const msciEM=Number(document.getElementById('msciEM').value)||15;const ctx=document.getElementById('chartRepartition');if(!ctx)return;if(chartPieInstance){chartPieInstance.destroy()}chartPieInstance=new Chart(ctx,{type:'doughnut',data:{labels:['🌍 MSCI World','🌏 Marchés émergents'],datasets:[{data:[msciWorld,msciEM],backgroundColor:['#39b46e','#7a6ff0'],borderColor:['#2d8f57','#6355cc'],borderWidth:2}]},options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{labels:{color:'#e2e8f0',font:{size:14},padding:20}},tooltip:{callbacks:{label:function(context){return context.label+': '+context.parsed+'%'}}}}}})}
+function calculerObjectif(){const objectifMontant=Number(document.getElementById('objectifMontant').value)||1000000;const objectifAge=Number(document.getElementById('objectifAge').value)||45;const ageActuel=Number(document.getElementById('age').value)||17;const rendementAnn=Number(document.getElementById('rendement').value)||7;const fraisCourtage=Number(document.getElementById('fraisCourtage').value)||0.2;const livretA=Number(document.getElementById('livretA').value)||0;const compteCourant=Number(document.getElementById('compteCourant').value)||0;const today=new Date();const rendement=(rendementAnn-fraisCourtage)/100;let valeurPEAActuelle=0;historiqueMois.forEach(item=>{const depDate=item.date instanceof Date?item.date:new Date(item.date);let monthsElapsed=(today.getFullYear()-depDate.getFullYear())*12+(today.getMonth()-depDate.getMonth());if(monthsElapsed<0)monthsElapsed=0;const monthlyRate=rendement/12;const fraisMontant=item.montant*(fraisCourtage/100);const montantNet=item.montant-fraisMontant;const value=montantNet*Math.pow(1+monthlyRate,monthsElapsed);valeurPEAActuelle+=value});const capitalActuel=livretA+compteCourant+valeurPEAActuelle;const years=objectifAge-ageActuel;if(years<=0){alert('⚠️ L\'âge cible doit être supérieur à ton âge actuel !');return}const months=years*12;const monthlyRate=rendement/12;const facteur=Math.pow(1+monthlyRate,months);const investissementMensuel=((objectifMontant-capitalActuel*facteur)*monthlyRate)/(facteur-1);document.getElementById('objMontant').textContent=formatEuro(objectifMontant);document.getElementById('objAge').textContent=objectifAge;document.getElementById('objInvestissement').textContent=formatEuro(Math.max(0,investissementMensuel));document.getElementById('resultatObjectif').style.display='block'}
 </script>
 </body>
 </html>
+
 
 

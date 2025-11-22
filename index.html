@@ -60,7 +60,7 @@ th{background:#1e2433;color:#cbd5e0;font-weight:700;font-size:13px;text-transfor
 .legend-color{width:24px;height:24px;border-radius:4px}
 .legend-label{color:#cbd5e0}
 .legend-value{color:#e2e8f0;font-weight:700;margin-left:auto}
-.scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.scenario-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px}
 .scenario-card{background:#1e2433;padding:24px;border-radius:12px;border:2px solid #374151}
 .scenario-card.optimiste{border-color:#39b46e}
 .scenario-card.neutre{border-color:#7a6ff0}
@@ -84,7 +84,8 @@ th{background:#1e2433;color:#cbd5e0;font-weight:700;font-size:13px;text-transfor
 .crypto-stat{background:#2d3748;padding:12px;border-radius:8px}
 .crypto-stat-label{font-size:11px;color:#9ca3af;text-transform:uppercase;margin-bottom:4px}
 .crypto-stat-value{font-size:18px;font-weight:800;color:#e2e8f0}
-@media (max-width:900px){.scenario-grid{grid-template-columns:1fr}.table-controls{grid-template-columns:1fr 1fr}.pie-container{flex-direction:column}.crypto-split{grid-template-columns:1fr}.folder-tabs{overflow-x:auto}}
+@media (max-width:900px){.scenario-grid{grid-template-columns:1fr 1fr}.table-controls{grid-template-columns:1fr 1fr}.pie-container{flex-direction:column}.crypto-split{grid-template-columns:1fr}.folder-tabs{overflow-x:auto}}
+@media (max-width:600px){.scenario-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -170,6 +171,11 @@ th{background:#1e2433;color:#cbd5e0;font-weight:700;font-size:13px;text-transfor
             <div class="scenario-title">😎 Optimiste (8%)</div>
             <div class="scenario-value" id="scenarioOptimiste">0 €</div>
             <div class="scenario-detail" id="detailOptimiste">Capital estimé</div>
+          </div>
+          <div class="scenario-card optimiste">
+            <div class="scenario-title">🚀 Ultra Optimiste (9.5%)</div>
+            <div class="scenario-value" id="scenarioUltraOptimiste">0 €</div>
+            <div class="scenario-detail" id="detailUltraOptimiste">Capital estimé</div>
           </div>
         </div>
       </div>
@@ -646,7 +652,8 @@ function calculerScenarios(capital, rendActuel) {
   const scen = [
     { id: 'Pessimiste', r: 5 },
     { id: 'Neutre', r: 6.5 },
-    { id: 'Optimiste', r: 8 }
+    { id: 'Optimiste', r: 8 },
+    { id: 'UltraOptimiste', r: 9.5 }
   ];
   
   scen.forEach(s => {
@@ -766,6 +773,5 @@ function formatEuro(val, signe = false) {
 </script>
 </body>
 </html>
-
 
 

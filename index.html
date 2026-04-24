@@ -67,7 +67,6 @@ body{
 .page{display:none}
 .page.active{display:block;}
 .hero-banner{background:linear-gradient(135deg,rgba(107,87,255,0.18) 0%,rgba(107,87,255,0.06) 60%,rgba(0,210,127,0.05) 100%);padding:32px 36px;border-radius:var(--radius-xl);margin-bottom:24px;border:1px solid rgba(107,87,255,0.2);position:relative;}
-.hero-capital{font-family:var(--font-numbers);font-size:44px;font-weight:800;color:var(--text-primary);}
 .params-section{background:var(--bg-glass);border-radius:var(--radius-lg);padding:26px;margin-bottom:24px;border:1px solid var(--border-subtle)}
 .params-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .param-item{background:var(--bg-surface);padding:14px 16px;border-radius:var(--radius-md);border:1px solid var(--border-subtle);}
@@ -80,7 +79,6 @@ body{
 table{width:100%;border-collapse:collapse;margin-top:14px}
 th{color:var(--text-ultra-muted);font-weight:600;font-size:9.5px;text-transform:uppercase;padding:11px 14px;text-align:left;border-bottom:1px solid var(--border-subtle)}
 td{padding:14px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.03);color:var(--text-secondary);font-size:13px;}
-.positive{color:var(--green);font-weight:700}
 .btn-add{background:var(--accent);color:#fff;padding:10px 18px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-weight:600;}
 .btn-delete{background:rgba(255,83,112,0.1);color:var(--red);border:1px solid var(--red);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:10px;}
 </style>
@@ -93,7 +91,7 @@ td{padding:14px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.
       <p>PEA · CTO · Crypto · Suivi complet</p>
     </div>
     <div class="header-right">
-      <div class="header-target">1 000 000 €</div>
+      <div class="header-target" id="totalGlobalHeader">0 €</div>
     </div>
   </div>
   <div class="folder-tabs">
@@ -106,161 +104,146 @@ td{padding:14px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.
   <div class="page-content">
     <div id="overview" class="page active">
       <div class="hero-banner">
-        <div class="hero-main">
-          <div class="hero-label" style="font-size:11px; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Capital total</div>
-          <div class="hero-capital" id="capitalTotalHero">0 €</div>
-        </div>
+        <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Capital Actuel</div>
+        <div style="font-family:var(--font-numbers); font-size:44px; font-weight:800;" id="capitalTotalHero">0 €</div>
       </div>
       <div class="params-section">
         <div class="params-grid">
           <div class="param-item"><label>💰 Revenu mensuel (€)</label><input id="revenu" type="number" value="1200"/></div>
-          <div class="param-item"><label>📈 Investissement Mensuel (€)</label><input id="investissementPEA" type="number" value="900"/></div>
+          <div class="param-item"><label>📈 Investissement Mensuel (€)</label><input id="investissementMensuel" type="number" value="900"/></div>
           <div class="param-item"><label>🎂 Âge actuel</label><input id="age" type="number" value="17"/></div>
         </div>
         <div style="text-align:center;margin-top:24px"><button class="btn-primary" onclick="calculer()">Calculer</button></div>
       </div>
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-label" style="font-size:10.5px; color:var(--text-muted);">Capital Calculé</div><div class="stat-value" id="capitalTotal">0 €</div></div>
-        <div class="stat-card"><div class="stat-label" style="font-size:10.5px; color:var(--text-muted);">Taux d'investissement global</div><div class="stat-value positive" id="tauxInvestGlobal">0%</div></div>
+        <div class="stat-card"><div class="stat-label" style="font-size:10.5px; color:var(--text-muted);">Total Investi</div><div class="stat-value" id="valeurInvestie">0 €</div></div>
+        <div class="stat-card"><div class="stat-label" style="font-size:10.5px; color:var(--text-muted);">Part de revenus investie</div><div class="stat-value" id="statTauxInvest" style="color:var(--green)">0%</div></div>
       </div>
     </div>
 
     <div id="revenus-page" class="page">
         <div class="hero-banner" style="background: linear-gradient(135deg, rgba(0, 210, 127, 0.15) 0%, rgba(0, 210, 127, 0.05) 100%);">
-            <div class="hero-main" style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
                 <div>
-                    <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Total Revenus Perçus</div>
-                    <div class="hero-capital" id="totalRevenusDisplay">0 €</div>
+                    <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Cumul des revenus (Vie)</div>
+                    <div style="font-family:var(--font-numbers); font-size:44px; font-weight:800;" id="totalRevenusVie">0 €</div>
                 </div>
                 <div style="text-align:right">
-                    <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Part Investie du Capital</div>
-                    <div class="hero-capital" style="color:var(--green)" id="partInvestieDisplay">0%</div>
+                    <div style="font-size:11px; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px;">Taux d'investissement</div>
+                    <div style="font-family:var(--font-numbers); font-size:44px; font-weight:800; color:var(--green);" id="tauxInvestRevenus">0%</div>
                 </div>
             </div>
         </div>
 
         <div class="params-section">
-            <div style="font-family:var(--font-display); font-size:13px; font-weight:700; margin-bottom:20px; text-transform:uppercase;">➕ Ajouter un revenu</div>
+            <div style="font-family:var(--font-display); font-size:13px; font-weight:700; margin-bottom:20px; text-transform:uppercase;">➕ Enregistrer une paye</div>
             <div class="params-grid" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); align-items: flex-end;">
-                <div class="param-item"><label>Date précise</label><input type="date" id="rev-date"></div>
-                <div class="param-item"><label>Mois / Année</label><input type="month" id="rev-mois"></div>
-                <div class="param-item"><label>Montant de la paye (€)</label><input type="number" id="rev-montant" placeholder="Ex: 1200"></div>
+                <div class="param-item"><label>Date</label><input type="date" id="revDate"></div>
+                <div class="param-item"><label>Mois</label><input type="text" id="revMois" placeholder="Ex: Octobre"></div>
+                <div class="param-item"><label>Année</label><input type="number" id="revAnnee" value="2024"></div>
+                <div class="param-item"><label>Montant (€)</label><input type="number" id="revMontant" placeholder="Ex: 1200"></div>
                 <button class="btn-add" onclick="ajouterRevenu()">Ajouter</button>
             </div>
         </div>
 
-        <div class="chart-section" style="background:var(--bg-glass); border-radius:var(--radius-lg); padding:26px; border:1px solid var(--border-subtle);">
-            <div style="font-family:var(--font-display); font-size:13px; font-weight:700; margin-bottom:20px; text-transform:uppercase;">📜 Historique des revenus</div>
+        <div style="background:var(--bg-glass); border-radius:var(--radius-lg); padding:26px; border:1px solid var(--border-subtle);">
+            <div style="font-family:var(--font-display); font-size:13px; font-weight:700; margin-bottom:20px; text-transform:uppercase;">📜 Historique</div>
             <table>
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Période</th>
+                        <th>Mois / Année</th>
                         <th>Montant</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="liste-revenus-corps"></tbody>
+                <tbody id="corpsRevenus"></tbody>
             </table>
         </div>
     </div>
 
-    <div id="pea" class="page"><h2>Page PEA</h2></div>
-    <div id="crypto" class="page"><h2>Page Crypto</h2></div>
+    <div id="pea" class="page"><h2>Détails PEA...</h2></div>
+    <div id="crypto" class="page"><h2>Détails Crypto...</h2></div>
   </div>
 </div>
 
 <script>
-// --- LOGIQUE DE NAVIGATION ---
+// --- NAVIGATION ---
 function switchPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.folder-tab').forEach(t => t.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
     event.currentTarget.classList.add('active');
-    if(pageId === 'overview' || pageId === 'revenus-page') calculerStatsGlobales();
 }
 
-// --- LOGIQUE DES REVENUS ---
-let revenus = JSON.parse(localStorage.getItem('luka_revenus')) || [];
+// --- LOGIQUE REVENUS ---
+let revenusData = JSON.parse(localStorage.getItem('revenus_luka')) || [];
 
 function ajouterRevenu() {
-    const dateVal = document.getElementById('rev-date').value;
-    const moisVal = document.getElementById('rev-mois').value;
-    const montantVal = parseFloat(document.getElementById('rev-montant').value);
+    const date = document.getElementById('revDate').value;
+    const mois = document.getElementById('revMois').value;
+    const annee = document.getElementById('revAnnee').value;
+    const montant = parseFloat(document.getElementById('revMontant').value);
 
-    if(!dateVal || !montantVal) { alert("Indique la date et le montant !"); return; }
+    if(!date || !montant) return alert("Remplis au moins la date et le montant !");
 
-    const nouveau = {
-        id: Date.now(),
-        date: dateVal,
-        periode: moisVal,
-        montant: montantVal
-    };
-
-    revenus.push(nouveau);
-    localStorage.setItem('luka_revenus', JSON.stringify(revenus));
-    renderRevenus();
-    calculerStatsGlobales();
+    revenusData.push({ id: Date.now(), date, mois, annee, montant });
+    localStorage.setItem('revenus_luka', JSON.stringify(revenusData));
     
-    // Reset inputs
-    document.getElementById('rev-montant').value = "";
+    document.getElementById('revMontant').value = "";
+    renderRevenus();
+    calculer();
 }
 
 function supprimerRevenu(id) {
-    revenus = revenus.filter(r => r.id !== id);
-    localStorage.setItem('luka_revenus', JSON.stringify(revenus));
+    revenusData = revenusData.filter(r => r.id !== id);
+    localStorage.setItem('revenus_luka', JSON.stringify(revenusData));
     renderRevenus();
-    calculerStatsGlobales();
+    calculer();
 }
 
 function renderRevenus() {
-    const corps = document.getElementById('liste-revenus-corps');
+    const corps = document.getElementById('corpsRevenus');
     corps.innerHTML = "";
-    let total = 0;
+    let cumul = 0;
 
-    // Trier du plus récent au plus ancien
-    revenus.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(r => {
-        total += r.montant;
+    revenusData.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(r => {
+        cumul += r.montant;
         corps.innerHTML += `
             <tr>
-                <td>${new Date(r.date).toLocaleDateString('fr-FR')}</td>
-                <td>${r.periode}</td>
-                <td class="positive">${r.montant.toLocaleString()} €</td>
+                <td>${r.date}</td>
+                <td>${r.mois} ${r.annee}</td>
+                <td style="color:var(--green); font-weight:bold;">${r.montant.toLocaleString()} €</td>
                 <td><button class="btn-delete" onclick="supprimerRevenu(${r.id})">Supprimer</button></td>
             </tr>
         `;
     });
-    document.getElementById('totalRevenusDisplay').innerText = total.toLocaleString() + " €";
+    document.getElementById('totalRevenusVie').innerText = cumul.toLocaleString() + " €";
 }
 
-// --- CALCULS ET STATS ---
+// --- CALCULS GLOBAUX ---
 function calculer() {
-    // Ta fonction d'origine pour simuler le capital
-    let r = parseFloat(document.getElementById('revenu').value);
-    let i = parseFloat(document.getElementById('investissementPEA').value);
-    document.getElementById('capitalTotal').innerText = (i * 12).toLocaleString() + " €"; 
-    document.getElementById('capitalTotalHero').innerText = (i * 12).toLocaleString() + " €";
-    calculerStatsGlobales();
+    // On récupère les valeurs des inputs
+    const investMensuel = parseFloat(document.getElementById('investissementMensuel').value) || 0;
+    
+    // Simulation simple du capital (ex: investissement annuel)
+    const capitalSimule = investMensuel * 12; 
+    
+    document.getElementById('capitalTotalHero').innerText = capitalSimule.toLocaleString() + " €";
+    document.getElementById('totalGlobalHeader').innerText = capitalSimule.toLocaleString() + " €";
+    document.getElementById('valeurInvestie').innerText = capitalSimule.toLocaleString() + " €";
+
+    // STATISTIQUES REVENUS vs INVESTISSEMENT
+    let totalGagne = revenusData.reduce((acc, curr) => acc + curr.montant, 0);
+    let taux = totalGagne > 0 ? (capitalSimule / totalGagne) * 100 : 0;
+
+    document.getElementById('tauxInvestRevenus').innerText = taux.toFixed(1) + "%";
+    document.getElementById('statTauxInvest').innerText = taux.toFixed(1) + "%";
 }
 
-function calculerStatsGlobales() {
-    // Calcul du pourcentage investi
-    let totalGagne = revenus.reduce((acc, curr) => acc + curr.montant, 0);
-    
-    // On simule ici que l'investissement total correspond au capital actuel affiché
-    // Pour être précis, on prend le capital total affiché dans le dashboard
-    let capitalActuel = parseFloat(document.getElementById('capitalTotalHero').innerText.replace(/\s/g, ''));
-    
-    let pourcentage = totalGagne > 0 ? (capitalActuel / totalGagne) * 100 : 0;
-    
-    document.getElementById('tauxInvestGlobal').innerText = pourcentage.toFixed(1) + "%";
-    document.getElementById('partInvestieDisplay').innerText = pourcentage.toFixed(1) + "%";
-}
-
-// Initialisation au chargement
+// Init
 renderRevenus();
 calculer();
 </script>
 </body>
 </html>
-
